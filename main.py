@@ -43,7 +43,7 @@ class alien:
 
         self.X=self.X+self.vitesse*self.sens
         C.coords(self.arc ,self.X-self.taille,Y-self.taille,self.X+self.taille,Y+self.taille)
-        # mise à jour 
+        # mise a jour 
         self.fenetre.after(80,self.mouvement)
         
         #Fonction lambda (Permet d'ajouter des arguments à la fonction)
@@ -80,6 +80,15 @@ class vaisseau:
         #Meme code que "mouvement" mais pas de repetition. La fonction est appellée via un évenement de touche.
         c=3
 
+#lancement du jeu
+def jeu():
+    print("Lancement du jeu")
+    arc=alien(5,50, mw, X)
+    mw.bind("<space>", lambda x: tir())
+
+def tir():
+    m=vaisseau(10,10)
+
 # Création de la fenêtre graphique
 mw = Tk()
 mw.title('Space Invader')
@@ -91,16 +100,16 @@ mw.configure(bg='black')
 menubar= Menu(mw)
 menufichier= Menu(menubar,tearoff=0)
 menufichier.add_command(label="Quitter", command = mw.destroy)
+menufichier.add_command(label="Jouer",command=jeu)
 menubar.add_cascade(label="Fichier", menu=menufichier)
 mw.config(menu=menubar)
-
 
 #Zone de texte
 score= Label(mw, bg="darkgray", text="Votre Score :")
 score.pack(padx=0, pady=0)
 
 #Bouton début de partie
-ButtonJouer=Button(mw,text='Jouer',command="")
+ButtonJouer=Button(mw,text='Jouer',command=jeu)
 ButtonJouer.pack(padx=50, pady=0)
 
 #Canevas
@@ -109,15 +118,14 @@ C = Canvas(mw, height=540, width=460)
 C.create_image(200,200, image=filename)
 
 
-#Ces appels servent de tests, à changer par des appels lors d'appuies sur clavier (espace pour tir)
-arc=alien(5,50, mw, X)
-m=vaisseau(10,10)
+
+
+
 C.pack()
 
-m=vaisseau(10,10)
 #Bouton quitter
 ButtonQuitter=Button(mw,text='Quitter',command=mw.destroy)
-ButtonQuitter.pack(padx=50, pady=0)
+ButtonQuitter.pack(padx=50, pady=0)12121
 
 
 
