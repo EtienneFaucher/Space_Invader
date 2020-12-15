@@ -2,7 +2,8 @@
 qui : Etienne FAucher   
 quand : le 08/12/2020 
 Interface graphique du pendu
-TODO : rien
+TODO : Fontions d'appels de fonction (tir et deplacement vaisseau)
+Pareil pour le debut du jeu quand on appuie sur jouer
 """
 
 from tkinter import Tk, Label, Button, Frame, Entry, PhotoImage, Canvas, Menu
@@ -42,7 +43,7 @@ class alien:
 
         self.X=self.X+self.vitesse*self.sens
         C.coords(self.arc ,self.X-self.taille,Y-self.taille,self.X+self.taille,Y+self.taille)
-        # mise à jour toutes les 50 ms
+        # mise à jour 
         self.fenetre.after(80,self.mouvement)
         
         #Fonction lambda (Permet d'ajouter des arguments à la fonction)
@@ -56,22 +57,26 @@ class vaisseau:
         self.ypos=20
         self.xpos_tir=300
         self.ypos_tir=300
-        self.tir_vaisseau
+        
+        #Creation du tir 
         self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
+        self.tir_vaisseau()
 
+        #Creation du vaisseau (ne s'affiche pas c'est bizarre)
+        imagevaisseau= PhotoImage(file="Images/vaisseau2.png")
+        self.vaisseau = C.create_image(self.xpos_tir, self.ypos_tir, image=imagevaisseau)
 
-    def tir_vaisseau(self):
+    def tir_vaisseau(self): #Deplacement du tir à partir du moment ou il est envoyé
         self.xpos_tir=self.xpos
-        self.ypos_tir=self.ypos_tir+5
+        self.ypos_tir=self.ypos_tir-10
         
         
-        self.ypos_tir+=self.tir
-        C.coords(self.tir ,self.xpos_tir-200,self.ypos_tir-200,self.xpos_tir+400,self.ypos_tir+400)
+        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
 
 
         mw.after(80,self.tir_vaisseau)
 
-    def deplacement(self):
+    def deplacement(self): #Deplacement du vaisseau
         #Meme code que "mouvement" mais pas de repetition. La fonction est appellée via un évenement de touche.
         c=3
 
@@ -104,7 +109,7 @@ C = Canvas(mw, height=540, width=460)
 C.create_image(200,200, image=filename)
 
 
-
+#Ces appels servent de tests, à changer par des appels lors d'appuies sur clavier (espace pour tir)
 arc=alien(5,50, mw, X)
 m=vaisseau(10,10)
 C.pack()
