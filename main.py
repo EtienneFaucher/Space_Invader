@@ -86,8 +86,9 @@ def jeu():
     arc=alien(5,50, mw, X)
     mw.bind("<space>", lambda x: tir())
 
+#Fonction qui tire (appelée par jeu)
 def tir():
-    m=vaisseau(10,10)
+    vaisseau(10,10)
 
 # Création de la fenêtre graphique
 mw = Tk()
@@ -125,7 +126,7 @@ C.pack()
 
 #Bouton quitter
 ButtonQuitter=Button(mw,text='Quitter',command=mw.destroy)
-ButtonQuitter.pack(padx=50, pady=0)12121
+ButtonQuitter.pack(padx=50, pady=0)
 
 
 
