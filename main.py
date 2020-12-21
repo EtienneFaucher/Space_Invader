@@ -29,10 +29,7 @@ class alien:
         self.mouvement()
         
     def mouvement(self):
-        Y=haut_canv/2
-        
-        
-
+        Y=haut_canv/6
         
         if self.X+self.taille > lar_canv:
             self.sens=-1
@@ -84,6 +81,7 @@ class vaisseau:
 def jeu():
     print("Lancement du jeu")
     arc=alien(5,50, mw, X)
+    arc2=alien(7,50, mw, X)
     mw.bind("<space>", lambda x: tir())
 
 #Fonction qui tire (appelée par jeu)
