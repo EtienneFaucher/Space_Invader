@@ -46,7 +46,7 @@ class alien:
         # mise a jour 
         self.fenetre.after(80,self.mouvement)
         
-        #Fonction lambda (Permet d'ajouter des arguments à la fonction)
+        #Fonction lambda (Permet d'ajouter des arguments a la fonction)
         #self.fenetre.after(80,lambda: self.mouvement())
 
 class vaisseau:
@@ -66,7 +66,7 @@ class vaisseau:
         imagevaisseau= PhotoImage(file="Images/vaisseau2.png")
         self.vaisseau = C.create_image(self.xpos_tir, self.ypos_tir, image=imagevaisseau)
 
-    def tir_vaisseau(self): #Deplacement du tir à partir du moment ou il est envoyé
+    def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
         self.xpos_tir=self.xpos
         self.ypos_tir=self.ypos_tir-10
         
@@ -77,7 +77,7 @@ class vaisseau:
         mw.after(80,self.tir_vaisseau)
 
     def deplacement(self): #Deplacement du vaisseau
-        #Meme code que "mouvement" mais pas de repetition. La fonction est appellée via un évenement de touche.
+        #Meme code que "mouvement" mais pas de repetition. La fonction est appellee via un evenement de touche.
         c=3
 
 #lancement du jeu
@@ -86,14 +86,14 @@ def jeu():
     arc=alien(5,50, mw, X)
     mw.bind("<space>", lambda x: tir())
 
-#Fonction qui tire (appelée par jeu)
+#Fonction qui tire (appelee par jeu)
 def tir():
     vaisseau(10,10)
 
-# Création de la fenêtre graphique
+# Creation de la fenetre graphique
 mw = Tk()
 mw.title('Space Invader')
-#Taille de fenêtre
+#Taille de fenetre
 mw.geometry('780x660+900+150')
 mw.configure(bg='black')
 
@@ -109,7 +109,7 @@ mw.config(menu=menubar)
 score= Label(mw, bg="darkgray", text="Votre Score :")
 score.pack(padx=0, pady=0)
 
-#Bouton début de partie
+#Bouton debut de partie
 ButtonJouer=Button(mw,text='Jouer',command=jeu)
 ButtonJouer.pack(padx=50, pady=0)
 
@@ -131,5 +131,5 @@ ButtonQuitter.pack(padx=50, pady=0)
 
 
 
-#lancement du gestionnaire d'événements
+#lancement du gestionnaire d'evenements
 mw.mainloop()
