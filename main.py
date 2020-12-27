@@ -71,18 +71,21 @@ class vaisseau:
     def __init__(self, vitesse_de_tir, taille_vaisseau):
         self.tir=vitesse_de_tir
         self.taille= taille_vaisseau
-        self.xpos=20
+        self.xpos=40
         self.ypos=20
-        self.xpos_tir=300
-        self.ypos_tir=300
+        self.xpos_tir=490
+        self.ypos_tir=500
         
         #Creation du tir 
         self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
         self.tir_vaisseau()
 
         #Creation du vaisseau (ne s'affiche pas c'est bizarre)
-        imagevaisseau= PhotoImage(file="Images/vaisseau2.png")
-        self.vaisseau = C.create_image(self.xpos_tir, self.ypos_tir, image=imagevaisseau)
+        #imagevaisseau= PhotoImage(file="Images/vaisseau2.png")
+        #self.vaisseau = C.create_image(self.xpos_tir, self.ypos_tir, image=imagevaisseau)
+
+        self.imageVaisseau = C.create_rectangle(self.xpos - self.taille, self.ypos_tir - self.taille, self.xpos + self.taille, self.ypos_tir + self.taille, fill='red')
+        
 
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
         self.xpos_tir=self.xpos
@@ -110,7 +113,7 @@ def jeu():
 
 #Fonction qui tire (appelee par jeu)
 def tir():
-    vaisseau(10,10)
+    vaisseau(10,20)
 
 def dep(sens):
     depX=0
