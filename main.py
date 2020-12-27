@@ -22,11 +22,17 @@ class alien:
         self.vitesse=vitesse
         self.taille=taille
         self.fenetre=mw
+        self.xpos_tir=300
+        self.ypos_tir=300
         coord = 10, 50, 240, 210
         self.arc = C.create_arc(coord, start=20, extent=320, fill="red")
         self.X=Xpos-50
+        self.Y= 240
         self.sens=1
+         #Creation du tir 
         self.mouvement()
+
+        self.creation_tir()
         
     def mouvement(self):
         Y=haut_canv/2
@@ -48,6 +54,18 @@ class alien:
         
         #Fonction lambda (Permet d'ajouter des arguments a la fonction)
         #self.fenetre.after(80,lambda: self.mouvement())
+    def creation_tir(self):
+        self.xpos_tir=self.X
+        self.ypos_tir=self.Y
+
+        self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
+        self.tir_alien()
+        mw.after(1400,self.creation_tir)
+
+    def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
+        self.ypos_tir=self.ypos_tir+1
+        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
+        mw.after(8,self.tir_alien)
 
 class vaisseau:
     def __init__(self, vitesse_de_tir, taille_vaisseau):
