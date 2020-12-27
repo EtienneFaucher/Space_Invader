@@ -103,10 +103,28 @@ def jeu():
     print("Lancement du jeu")
     arc=alien(5,50, mw, X)
     mw.bind("<space>", lambda x: tir())
+    mw.bind("<Right>",lambda x:dep("Droite"))
+    mw.bind("<Left>",lambda x:dep("Left"))
+    mw.bind("<Down>",lambda x:dep("Down"))
+    mw.bind("<Up>",lambda x:dep("Up"))
 
 #Fonction qui tire (appelee par jeu)
 def tir():
     vaisseau(10,10)
+
+def dep(sens):
+    depX=0
+    depY=0
+    if sens=="Droite":
+        depX=10
+    elif sens=="Gauche":
+        depY=-10
+    elif sens=="Down":
+        depY=-10
+    elif sens=="Up":
+        depY=10
+    
+
 
 # Creation de la fenetre graphique
 mw = Tk()
@@ -135,11 +153,6 @@ ButtonJouer.pack(padx=50, pady=0)
 filename = PhotoImage(file="Images/fond.gif" , master=mw,)
 C = Canvas(mw, height=540, width=460)
 C.create_image(200,200, image=filename)
-
-
-
-
-
 C.pack()
 
 #Bouton quitter
