@@ -22,11 +22,17 @@ class alien:
         self.vitesse=vitesse
         self.taille=taille
         self.fenetre=mw
+        self.xpos_tir=300
+        self.ypos_tir=300
         coord = 10, 50, 240, 210
         self.arc = C.create_arc(coord, start=20, extent=320, fill="red")
         self.X=Xpos-50
+        self.Y= 240
         self.sens=1
+         #Creation du tir 
         self.mouvement()
+
+        self.creation_tir()
         
     def mouvement(self):
         Y=haut_canv/6
@@ -43,27 +49,42 @@ class alien:
         # mise a jour 
         self.fenetre.after(80,self.mouvement)
         
-        #Fonction lambda (Permet d'ajouter des arguments à la fonction)
+        #Fonction lambda (Permet d'ajouter des arguments a la fonction)
         #self.fenetre.after(80,lambda: self.mouvement())
+    def creation_tir(self):
+        self.xpos_tir=self.X
+        self.ypos_tir=self.Y
+
+        self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
+        self.tir_alien()
+        mw.after(1400,self.creation_tir)
+
+    def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
+        self.ypos_tir=self.ypos_tir+1
+        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
+        mw.after(8,self.tir_alien)
 
 class vaisseau:
     def __init__(self, vitesse_de_tir, taille_vaisseau):
         self.tir=vitesse_de_tir
         self.taille= taille_vaisseau
-        self.xpos=20
+        self.xpos=40
         self.ypos=20
-        self.xpos_tir=300
-        self.ypos_tir=300
+        self.xpos_tir=490
+        self.ypos_tir=500
         
         #Creation du tir 
         self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
         self.tir_vaisseau()
 
         #Creation du vaisseau (ne s'affiche pas c'est bizarre)
-        imagevaisseau= PhotoImage(file="Images/vaisseau2.png")
-        self.vaisseau = C.create_image(self.xpos_tir, self.ypos_tir, image=imagevaisseau)
+        #imagevaisseau= PhotoImage(file="Images/vaisseau2.png")
+        #self.vaisseau = C.create_image(self.xpos_tir, self.ypos_tir, image=imagevaisseau)
 
-    def tir_vaisseau(self): #Deplacement du tir à partir du moment ou il est envoyé
+        self.imageVaisseau = C.create_rectangle(self.xpos - self.taille, self.ypos_tir - self.taille, self.xpos + self.taille, self.ypos_tir + self.taille, fill='red')
+        
+
+    def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
         self.xpos_tir=self.xpos
         self.ypos_tir=self.ypos_tir-10
         
@@ -74,7 +95,7 @@ class vaisseau:
         mw.after(80,self.tir_vaisseau)
 
     def deplacement(self): #Deplacement du vaisseau
-        #Meme code que "mouvement" mais pas de repetition. La fonction est appellée via un évenement de touche.
+        #Meme code que "mouvement" mais pas de repetition. La fonction est appellee via un evenement de touche.
         c=3
 
 #lancement du jeu
@@ -83,15 +104,33 @@ def jeu():
     arc=alien(5,50, mw, X)
     arc2=alien(7,50, mw, X)
     mw.bind("<space>", lambda x: tir())
+    mw.bind("<Right>",lambda x:dep("Droite"))
+    mw.bind("<Left>",lambda x:dep("Left"))
+    mw.bind("<Down>",lambda x:dep("Down"))
+    mw.bind("<Up>",lambda x:dep("Up"))
 
-#Fonction qui tire (appelée par jeu)
+#Fonction qui tire (appelee par jeu)
 def tir():
-    vaisseau(10,10)
+    vaisseau(10,20)
 
-# Création de la fenêtre graphique
+def dep(sens):
+    depX=0
+    depY=0
+    if sens=="Droite":
+        depX=10
+    elif sens=="Gauche":
+        depY=-10
+    elif sens=="Down":
+        depY=-10
+    elif sens=="Up":
+        depY=10
+    
+
+
+# Creation de la fenetre graphique
 mw = Tk()
 mw.title('Space Invader')
-#Taille de fenêtre
+#Taille de fenetre
 mw.geometry('780x660+900+150')
 mw.configure(bg='black')
 
@@ -107,7 +146,7 @@ mw.config(menu=menubar)
 score= Label(mw, bg="darkgray", text="Votre Score :")
 score.pack(padx=0, pady=0)
 
-#Bouton début de partie
+#Bouton debut de partie
 ButtonJouer=Button(mw,text='Jouer',command=jeu)
 ButtonJouer.pack(padx=50, pady=0)
 
@@ -115,11 +154,6 @@ ButtonJouer.pack(padx=50, pady=0)
 filename = PhotoImage(file="Images/fond.gif" , master=mw,)
 C = Canvas(mw, height=540, width=460)
 C.create_image(200,200, image=filename)
-
-
-
-
-
 C.pack()
 
 #Bouton quitter
@@ -129,5 +163,5 @@ ButtonQuitter.pack(padx=50, pady=0)
 
 
 
-#lancement du gestionnaire d'événements
+#lancement du gestionnaire d'evenements
 mw.mainloop()
