@@ -55,13 +55,14 @@ class alien:
         self.xpos_tir=self.X
         self.ypos_tir=self.Y
 
-        self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
+        self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 270, start=-270, extent=359, fill="yellow")
         self.tir_alien()
         mw.after(1400,self.creation_tir)
 
     def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
-        self.ypos_tir=self.ypos_tir+1
+        self.ypos_tir=self.ypos_tir+0.8
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
+        
         mw.after(8,self.tir_alien)
 
 class vaisseau:
@@ -101,8 +102,10 @@ class vaisseau:
 #lancement du jeu
 def jeu():
     print("Lancement du jeu")
+    ButtonJouer.destroy()
     arc=alien(5,50, mw, X)
-    arc2=alien(7,50, mw, X)
+    arc2=alien(5,50, mw, X+200)
+    arc3=alien(5,50, mw, X-200)
     mw.bind("<space>", lambda x: tir())
     mw.bind("<Right>",lambda x:dep("Droite"))
     mw.bind("<Left>",lambda x:dep("Left"))
@@ -112,7 +115,7 @@ def jeu():
 #Fonction qui tire (appelee par jeu)
 def tir():
     vaisseau(10,20)
-
+    
 def dep(sens):
     depX=0
     depY=0
