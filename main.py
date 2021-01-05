@@ -14,7 +14,7 @@ haut_w=560
 lar_canv=480
 haut_canv=360
 X=lar_canv/2
-Y=haut_canv/2
+Y=haut_canv/2 
 
 class alien:
     def __init__(self, vitesse, taille, mw, Xpos):
@@ -51,19 +51,23 @@ class alien:
         
         #Fonction lambda (Permet d'ajouter des arguments a la fonction)
         #self.fenetre.after(80,lambda: self.mouvement())
-    def creation_tir(self):
+    def creation_tir(self):#Crée le tir à l'endroit ou est l'alien
         self.xpos_tir=self.X
-        self.ypos_tir=self.Y
+        self.ypos_tir=self.Y-30
 
         self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 270, start=-270, extent=359, fill="yellow")
         self.tir_alien()
-        mw.after(1400,self.creation_tir)
+
+        #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
+        self.fenetre.after(1000,lambda: C.delete(self.tir))
+        
+        self.fenetre.after(1400,self.creation_tir)
 
     def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
         self.ypos_tir=self.ypos_tir+0.8
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
         
-        mw.after(8,self.tir_alien)
+        self.fenetre.after(8,self.tir_alien)
 
 class vaisseau:
     def __init__(self, vitesse_de_tir, taille_vaisseau):
@@ -95,26 +99,25 @@ class vaisseau:
 
         mw.after(80,self.tir_vaisseau)
 
-    def deplacement(self): #Deplacement du vaisseau
+    def deplacement(self,depX,depY): #Deplacement du vaisseau
         #Meme code que "mouvement" mais pas de repetition. La fonction est appellee via un evenement de touche.
-        c=3
+       self.xpos=self.xpos+depX
+       self.ypos=self.ypos+depY
+
 
 #lancement du jeu
 def jeu():
     print("Lancement du jeu")
     ButtonJouer.destroy()
+    vaisseau(10,20)
     arc=alien(5,50, mw, X)
     arc2=alien(5,50, mw, X+200)
     arc3=alien(5,50, mw, X-200)
-    mw.bind("<space>", lambda x: tir())
+    mw.bind("<space>", lambda x: vaisseau(10,20))
     mw.bind("<Right>",lambda x:dep("Droite"))
     mw.bind("<Left>",lambda x:dep("Left"))
     mw.bind("<Down>",lambda x:dep("Down"))
     mw.bind("<Up>",lambda x:dep("Up"))
-
-#Fonction qui tire (appelee par jeu)
-def tir():
-    vaisseau(10,20)
     
 def dep(sens):
     depX=0
@@ -127,7 +130,7 @@ def dep(sens):
         depY=-10
     elif sens=="Up":
         depY=10
-    
+    vaisseau.deplacement(vaisseau,depX,depY)
 
 
 # Creation de la fenetre graphique
