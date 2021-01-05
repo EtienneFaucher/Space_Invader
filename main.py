@@ -26,7 +26,7 @@ class alien:
         self.ypos_tir=300
         coord = 10, 50, 240, 210
         self.alien=PhotoImage(file="Images/alien.gif")
-        self.arc = C.create_image(240, 210,image=self.alien)
+        self.arc = C.create_image(10,12,image=self.alien)
         self.X=Xpos-50
         self.Y= 240
         self.sens=1
@@ -47,7 +47,7 @@ class alien:
             self.sens=1
 
         self.X=self.X+self.vitesse*self.sens
-        C.coords(self.arc ,self.X-self.taille,Y-self.taille,self.X+self.taille,Y+self.taille)
+        C.coords(self.arc ,self.X-self.taille,Y-self.taille)
         # mise a jour 
         self.fenetre.after(80,self.mouvement)
         
