@@ -11,8 +11,8 @@ from tkinter import Tk, Label, Button, Frame, Entry, PhotoImage, Canvas, Menu
 #Variables
 lar_w=580
 haut_w=560
-lar_canv=480
-haut_canv=360
+lar_canv=960
+haut_canv=540
 X=lar_canv/2
 Y=haut_canv/2 
 
@@ -26,7 +26,7 @@ class alien:
         self.ypos_tir=300
         coord = 10, 50, 240, 210
         self.alien=PhotoImage(file="Images/alien.gif")
-        self.arc = C.create_image(10,12,image=self.alien)
+        self.arc = C.create_image(100,100,image=self.alien)
         self.X=Xpos-50
         self.Y= 240
         self.sens=1
@@ -37,7 +37,7 @@ class alien:
         self.creation_tir()
         
     def mouvement(self):
-        Y=haut_canv/6
+        Y=haut_canv/6+50
         
         if self.X+self.taille > lar_canv:
             self.sens=-1
@@ -153,7 +153,7 @@ ButtonJouer.pack(padx=50, pady=0)
 
 #Canevas
 filename = PhotoImage(file="Images/fond1.gif" , master=mw,)
-C = Canvas(mw, height=540, width=960)
+C = Canvas(mw, height=haut_canv, width=lar_canv)
 C.create_image(200,200, image=filename)
 C.pack()
 
