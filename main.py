@@ -108,6 +108,7 @@ class vaisseau:
 
     def droite(self,event):
         posx = 10
+        posy = 0
         C.move(self.imageVaisseau, posx, posy)
 
     def gauche(self,event):
