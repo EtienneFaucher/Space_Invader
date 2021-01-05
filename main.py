@@ -99,14 +99,17 @@ class vaisseau:
 
         mw.after(80,self.tir_vaisseau)
 
-    def deplacement(self): #Deplacement du vaisseau
+    def deplacement(self,depX,depY): #Deplacement du vaisseau
         #Meme code que "mouvement" mais pas de repetition. La fonction est appellee via un evenement de touche.
-        c=3
+       self.xpos=self.xpos+depX
+       self.ypos=self.ypos+depY
+
 
 #lancement du jeu
 def jeu():
     print("Lancement du jeu")
     ButtonJouer.destroy()
+    vaisseau(10,20)
     arc=alien(5,50, mw, X)
     arc2=alien(5,50, mw, X+200)
     arc3=alien(5,50, mw, X-200)
@@ -127,7 +130,7 @@ def dep(sens):
         depY=-10
     elif sens=="Up":
         depY=10
-    
+    vaisseau.deplacement(vaisseau,depX,depY)
 
 
 # Creation de la fenetre graphique
