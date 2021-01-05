@@ -73,8 +73,8 @@ class vaisseau:
     def __init__(self, vitesse_de_tir, taille_vaisseau):
         self.tir=vitesse_de_tir
         self.taille= taille_vaisseau
-        self.xpos=40
-        self.ypos=20
+        self.xpos=lar_canv / 2
+        self.ypos=haut_canv / 2
         self.xpos_tir=490
         self.ypos_tir=500
         
@@ -87,7 +87,9 @@ class vaisseau:
         #self.vaisseau = C.create_image(self.xpos_tir, self.ypos_tir, image=imagevaisseau)
 
         self.imageVaisseau = C.create_rectangle(self.xpos - self.taille, self.ypos_tir - self.taille, self.xpos + self.taille, self.ypos_tir + self.taille, fill='red')
-        
+
+        mw.bind('<Right>', self.droite)
+
 
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
         self.xpos_tir=self.xpos
@@ -99,38 +101,44 @@ class vaisseau:
 
         mw.after(80,self.tir_vaisseau)
 
-    def deplacement(self,depX,depY): #Deplacement du vaisseau
+    #def deplacement(self,depX,depY): #Deplacement du vaisseau
         #Meme code que "mouvement" mais pas de repetition. La fonction est appellee via un evenement de touche.
-       self.xpos=self.xpos+depX
-       self.ypos=self.ypos+depY
+       #self.xpos=self.xpos+depX
+       #self.ypos=self.ypos+depY
 
+    def droite(self,event):
+        posx = 10
+        C.move(self.imageVaisseau, posx, posy)
+
+    def gauche(self,event):
 
 #lancement du jeu
 def jeu():
     print("Lancement du jeu")
     ButtonJouer.destroy()
-    vaisseau(10,20)
+    vaiss = vaisseau(10,20)
     arc=alien(5,50, mw, X)
     arc2=alien(5,50, mw, X+200)
     arc3=alien(5,50, mw, X-200)
-    mw.bind("<space>", lambda x: vaisseau(10,20))
-    mw.bind("<Right>",lambda x:dep("Droite"))
-    mw.bind("<Left>",lambda x:dep("Left"))
-    mw.bind("<Down>",lambda x:dep("Down"))
-    mw.bind("<Up>",lambda x:dep("Up"))
+    mw.bind("<space>", lambda x:vaiss.tir_vaisseau())
+    #mw.bind("<Right>",lambda x:vaisseau)
+    #mw.bind("<Left>",lambda x:dep("Left"))
+    #mw.bind("<Down>",lambda x:dep("Down"))
+    #mw.bind("<Up>",lambda x:dep("Up"))
     
-def dep(sens):
-    depX=0
-    depY=0
-    if sens=="Droite":
-        depX=10
-    elif sens=="Gauche":
-        depY=-10
-    elif sens=="Down":
-        depY=-10
-    elif sens=="Up":
-        depY=10
-    vaisseau.deplacement(vaisseau,depX,depY)
+    
+#def dep(sens):
+    #depX=0
+    #depY=0
+    #if sens=="Droite":
+       # depX=10
+    #elif sens=="Gauche":
+    #    depY=-10
+    #elif sens=="Down":
+    #    depY=-10
+    #elif sens=="Up":
+    #    depY=10
+    #vaisseau.deplacement(vaisseau,depX,depY)
 
 
 # Creation de la fenetre graphique
