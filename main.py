@@ -85,8 +85,8 @@ class vaisseau:
         self.vaisseau=PhotoImage(file="Images/vaisseau2.png")
 
         #Creation du tir 
-        self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
-        self.tir_vaisseau()
+        #self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
+        #self.tir_vaisseau()
 
         #Creation du vaisseau (ne s'affiche pas c'est bizarre)
         #imagevaisseau= PhotoImage(file="Images/vaisseau2.png")
@@ -96,18 +96,18 @@ class vaisseau:
 
         mw.bind('<Right>', self.droite)
         mw.bind('<Left>', self.gauche)
+        mw.bind('<space>', self.creation_tir)
+
+    def creation_tir(self):
+        self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
+        self.tir_vaisseau()
 
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
+        self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
         self.xpos_tir=self.xpos
         self.ypos_tir=self.ypos_tir-10
-        
-        
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
-
-
         mw.after(80,self.tir_vaisseau)
-
-    
 
     def droite(self,event):
         posx = 10
@@ -127,7 +127,7 @@ def jeu():
     arc=alien(5,50, mw, X)
     arc2=alien(5,50, mw, X+200)
     arc3=alien(5,50, mw, X-200)
-    mw.bind("<space>", lambda x:vaiss.tir_vaisseau())
+    #mw.bind("<space>", lambda x:vaiss.tir_vaisseau())
 
 # Creation de la fenetre graphique
 mw = Tk()
