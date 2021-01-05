@@ -25,8 +25,8 @@ class alien:
         self.xpos_tir=300
         self.ypos_tir=300
         coord = 10, 50, 240, 210
-        alien=PhotoImage(file="Images/alien.gif")
-        self.arc = C.create_arc(coord, start=20, extent=320, fill="red")
+        self.alien=PhotoImage(file="Images/alien.gif")
+        self.arc = C.create_image(240, 210,image=self.alien)
         self.X=Xpos-50
         self.Y= 240
         self.sens=1
