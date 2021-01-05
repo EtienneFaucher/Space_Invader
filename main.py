@@ -26,7 +26,8 @@ class alien:
         self.ypos_tir=300
         coord = 10, 50, 240, 210
         self.alien=PhotoImage(file="Images/alien.gif")
-        
+        self.laser=PhotoImage(file="Images/tir.png")
+
         self.arc = C.create_image(100,100,image=self.alien)
         self.X=Xpos-50
         self.Y= 240
@@ -58,7 +59,7 @@ class alien:
         self.xpos_tir=self.X
         self.ypos_tir=self.Y-30
 
-        self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 270, start=-270, extent=359, fill="yellow")
+        self.tir = C.create_image(self.xpos_tir, self.ypos_tir,image= self.laser )
         
         if self.canShoot:
             self.tir_alien()
@@ -71,7 +72,7 @@ class alien:
 
     def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
         self.ypos_tir=self.ypos_tir+2
-        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
+        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20)
         
         self.fenetre.after(8,self.tir_alien)
 
