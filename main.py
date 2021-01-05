@@ -1,5 +1,5 @@
 """
-qui : Etienne FAucher & Silia TAIDER  
+qui : Etienne FAucher   
 quand : le 08/12/2020 
 Interface graphique du pendu
 TODO : Fontions d'appels de fonction (tir et deplacement vaisseau)
@@ -25,10 +25,12 @@ class alien:
         self.xpos_tir=300
         self.ypos_tir=300
         coord = 10, 50, 240, 210
+        alien=PhotoImage(file="Images/alien.gif")
         self.arc = C.create_arc(coord, start=20, extent=320, fill="red")
         self.X=Xpos-50
         self.Y= 240
         self.sens=1
+        self.canShoot = True
          #Creation du tir 
         self.mouvement()
 
@@ -56,15 +58,18 @@ class alien:
         self.ypos_tir=self.Y-30
 
         self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 270, start=-270, extent=359, fill="yellow")
-        self.tir_alien()
+        
+        if self.canShoot:
+            self.tir_alien()
+            self.canShoot = False
 
         #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
-        self.fenetre.after(1000,lambda: C.delete(self.tir))
+        self.fenetre.after(1100,lambda: C.delete(self.tir))
         
         self.fenetre.after(1400,self.creation_tir)
 
     def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
-        self.ypos_tir=self.ypos_tir+0.8
+        self.ypos_tir=self.ypos_tir+2
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
         
         self.fenetre.after(8,self.tir_alien)
@@ -89,8 +94,6 @@ class vaisseau:
         self.imageVaisseau = C.create_rectangle(self.xpos - self.taille, self.ypos_tir - self.taille, self.xpos + self.taille, self.ypos_tir + self.taille, fill='red')
 
         mw.bind('<Right>', self.droite)
-        mw.bind('<Left>', self.gauche)
-
 
 
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
@@ -103,20 +106,15 @@ class vaisseau:
 
         mw.after(80,self.tir_vaisseau)
 
-    #def deplacement(self,depX,depY): #Deplacement du vaisseau
-        #Meme code que "mouvement" mais pas de repetition. La fonction est appellee via un evenement de touche.
-       #self.xpos=self.xpos+depX
-       #self.ypos=self.ypos+depY
+    
 
     def droite(self,event):
         posx = 10
-        posy = 0
+        posy=0
         C.move(self.imageVaisseau, posx, posy)
 
     def gauche(self,event):
-        posx = -10
-        posy = 0
-        C.move(self.imageVaisseau, posx, posy)
+        c=3
 
 #lancement du jeu
 def jeu():
@@ -127,25 +125,6 @@ def jeu():
     arc2=alien(5,50, mw, X+200)
     arc3=alien(5,50, mw, X-200)
     mw.bind("<space>", lambda x:vaiss.tir_vaisseau())
-    #mw.bind("<Right>",lambda x:vaisseau)
-    #mw.bind("<Left>",lambda x:dep("Left"))
-    #mw.bind("<Down>",lambda x:dep("Down"))
-    #mw.bind("<Up>",lambda x:dep("Up"))
-    
-    
-#def dep(sens):
-    #depX=0
-    #depY=0
-    #if sens=="Droite":
-       # depX=10
-    #elif sens=="Gauche":
-    #    depY=-10
-    #elif sens=="Down":
-    #    depY=-10
-    #elif sens=="Up":
-    #    depY=10
-    #vaisseau.deplacement(vaisseau,depX,depY)
-
 
 # Creation de la fenetre graphique
 mw = Tk()
