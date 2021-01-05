@@ -82,7 +82,8 @@ class vaisseau:
         self.ypos=haut_canv / 2
         self.xpos_tir=490
         self.ypos_tir=500
-        
+        self.vaisseau=PhotoImage(file="Images/vaisseau2.png")
+
         #Creation du tir 
         self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
         self.tir_vaisseau()
@@ -91,7 +92,7 @@ class vaisseau:
         #imagevaisseau= PhotoImage(file="Images/vaisseau2.png")
         #self.vaisseau = C.create_image(self.xpos_tir, self.ypos_tir, image=imagevaisseau)
 
-        self.imageVaisseau = C.create_rectangle(self.xpos - self.taille, self.ypos_tir - self.taille, self.xpos + self.taille, self.ypos_tir + self.taille, fill='red')
+        self.imageVaisseau = C.create_image(self.xpos - self.taille, self.ypos_tir - self.taille, image=self.vaisseau)
 
         mw.bind('<Right>', self.droite)
         mw.bind('<Left>', self.gauche)
