@@ -151,7 +151,7 @@ def jeu():
 mw = Tk()
 mw.title('Space Invader')
 #Taille de fenetre
-mw.geometry('780x660+900+150')
+mw.geometry('1280x660')
 mw.configure(bg='black')
 
 #Menu
@@ -172,7 +172,7 @@ ButtonJouer.pack(padx=50, pady=0)
 
 #Canevas
 filename = PhotoImage(file="Images/fond.gif" , master=mw,)
-C = Canvas(mw, height=540, width=460)
+C = Canvas(mw, height=540, width=960)
 C.create_image(200,200, image=filename)
 C.pack()
 
