@@ -94,7 +94,7 @@ class vaisseau:
         self.imageVaisseau = C.create_rectangle(self.xpos - self.taille, self.ypos_tir - self.taille, self.xpos + self.taille, self.ypos_tir + self.taille, fill='red')
 
         mw.bind('<Right>', self.droite)
-
+        mw.bind('<Left>', self.gauche)
 
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
         self.xpos_tir=self.xpos
@@ -114,7 +114,9 @@ class vaisseau:
         C.move(self.imageVaisseau, posx, posy)
 
     def gauche(self,event):
-        c=3
+        posx = -10
+        posy=0
+        C.move(self.imageVaisseau, posx, posy)
 
 #lancement du jeu
 def jeu():
