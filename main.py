@@ -152,7 +152,7 @@ ButtonJouer=Button(mw,text='Jouer',command=jeu)
 ButtonJouer.pack(padx=50, pady=0)
 
 #Canevas
-filename = PhotoImage(file="Images/fond.gif" , master=mw,)
+filename = PhotoImage(file="Images/fond1.gif" , master=mw,)
 C = Canvas(mw, height=540, width=960)
 C.create_image(200,200, image=filename)
 C.pack()
