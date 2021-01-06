@@ -5,7 +5,7 @@ Interface graphique du pendu
 TODO : Fontions d'appels de fonction (tir et deplacement vaisseau)
 Pareil pour le debut du jeu quand on appuie sur jouer
 """
-
+import random
 from tkinter import Tk, Label, Button, Frame, Entry, PhotoImage, Canvas, Menu
 
 #Variables
@@ -66,12 +66,12 @@ class alien:
             self.canShoot = False
 
         #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
-        self.fenetre.after(1100,lambda: C.delete(self.tir))
+        self.fenetre.after(1700,lambda: C.delete(self.tir))
         
-        self.fenetre.after(1400,self.creation_tir)
+        self.fenetre.after( random.randint(1700, 2100),self.creation_tir)
 
     def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
-        self.ypos_tir=self.ypos_tir+2
+        self.ypos_tir=self.ypos_tir+1.6
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20)
         
         self.fenetre.after(8,self.tir_alien)
