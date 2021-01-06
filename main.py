@@ -39,7 +39,7 @@ class alien:
         self.creation_tir()
         
     def mouvement(self):
-        Y=haut_canv/6+50
+        Y=haut_canv/6
         
         if self.X+self.taille > lar_canv:
             self.sens=-1
@@ -100,16 +100,19 @@ class vaisseau:
         mw.bind('<Left>', self.gauche)
         mw.bind('<space>', self.creation_tir)
 
-    def creation_tir(self):
-        self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
+    def creation_tir(self,event):
+        self.tir = C.create_arc(self.xpos, self.ypos, 275, 275, start=-270, extent=359, fill="yellow")
         self.tir_vaisseau()
+        mw.after(1000, lambda: C.delete(self.tir))
+        self.ypos_tir=self.ypos
 
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
-        self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
+        #self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
         self.xpos_tir=self.xpos
         self.ypos_tir=self.ypos_tir-10
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
         mw.after(80,self.tir_vaisseau)
+        #mw.after(4000, lambda: C.delete(self.tir))
 
     def droite(self,event):
         posx = 10
@@ -121,9 +124,17 @@ class vaisseau:
         posy=0
         C.move(self.imageVaisseau, posx, posy)
 
+class obstacle:
+    def __init__(self,posX,posY):
+        self.obs_x=posX
+        self.obs_y=posY
+        self.obs=PhotoImage(file="Images/obstacle.png")
+        self.obstacle = C.create_image(posX,posY, image=self.obs)
+
 #lancement du jeu
 def jeu():
     print("Lancement du jeu")
+    obstacle(300,300)
     ButtonJouer.destroy()
     vaiss = vaisseau(10,20)
     arc=alien(5,50, mw, X)
