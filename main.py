@@ -101,13 +101,12 @@ class vaisseau:
         mw.bind('<space>', self.creation_tir)
 
     def creation_tir(self,event):
-        self.tir = C.create_arc(self.xpos, self.ypos, 275, 275, start=-270, extent=359, fill="yellow")
+        self.tir = C.create_arc(self.xpos, self.ypos, 275, 75, start=-270, extent=359, fill="yellow")
         self.tir_vaisseau()
         mw.after(1000, lambda: C.delete(self.tir))
         self.ypos_tir=self.ypos
 
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
-        #self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
         self.xpos_tir=self.xpos
         self.ypos_tir=self.ypos_tir-10
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
@@ -117,11 +116,13 @@ class vaisseau:
     def droite(self,event):
         posx = 10
         posy=0
+        self.xpos = self.xpos + posx
         C.move(self.imageVaisseau, posx, posy)
 
     def gauche(self,event):
         posx = -10
         posy=0
+        self.xpos = self.xpos + posx
         C.move(self.imageVaisseau, posx, posy)
 
 class obstacle:
@@ -174,9 +175,6 @@ C.pack()
 #Bouton quitter
 ButtonQuitter=Button(mw,text='Quitter',command=mw.destroy)
 ButtonQuitter.pack(padx=50, pady=0)
-
-
-
 
 #lancement du gestionnaire d'evenements
 mw.mainloop()
