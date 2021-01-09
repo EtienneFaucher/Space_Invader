@@ -90,6 +90,7 @@ class vaisseau:
         self.ypos_tir=ypos_tir_vaisseau
         self.vaisseau=PhotoImage(file="Images/vaisseau2.png")
         self.canShoot=True
+        self.shoot=True
         #Creation du tir 
         #self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
         #self.tir_vaisseau()
@@ -98,7 +99,8 @@ class vaisseau:
 
         mw.bind('<Right>', self.droite)
         mw.bind('<Left>', self.gauche)
-        mw.bind('<space>', self.creation_tir)
+        if self.shoot:
+            mw.bind('<space>', self.creation_tir)
 
     def creation_tir(self,event):
         #self.tir1=PhotoImage(file="Images/tir2.png")
@@ -107,16 +109,18 @@ class vaisseau:
         self.xpos_tir=self.xpos
         self.ypos_tir=self.ypos
         if self.canShoot:
+            
             self.tir_vaisseau()
             self.canShoot=False
-
+            self.shoot=False
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
         
         self.ypos_tir=self.ypos_tir-10
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
-        mw.after(80,self.tir_vaisseau)
-        #mw.after(4000, lambda: C.delete(self.imageTir))
-        mw.after(8000, lambda: C.delete(self.tir))
+        mw.after(30,self.tir_vaisseau)
+        if self.ypos_tir>haut_canv:
+            C.delete(self.tir)
+            self.shoot=True
 
     def droite(self,event):
         posx = 10
