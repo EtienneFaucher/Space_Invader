@@ -61,7 +61,7 @@ class alien:
         #self.fenetre.after(80,lambda: self.mouvement())
     def creation_tir(self):#Crée le tir à l'endroit ou est l'alien
         self.xpos_tir=self.X
-        self.ypos_tir=self.Y-30
+        self.ypos_tir=self.Y
 
         self.tir = C.create_image(self.xpos_tir, self.ypos_tir,image= self.laser )
         
@@ -70,13 +70,13 @@ class alien:
             self.canShoot = False
 
         #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
-        self.fenetre.after(1700,lambda: C.delete(self.tir))
+        self.fenetre.after(2100,lambda: C.delete(self.tir))
         
-        self.fenetre.after( random.randint(1700, 2100),self.creation_tir)
+        self.fenetre.after( random.randint(2100, 2400),self.creation_tir)
 
     def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
-        self.ypos_tir=self.ypos_tir+1.6
-        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20)
+        self.ypos_tir=self.ypos_tir+3.4
+        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-150)
         
         self.fenetre.after(8,self.tir_alien)
 
@@ -152,7 +152,7 @@ def jeu():
     print(vaiss.xpos_tir)
     print(vaiss.ypos_tir)
     #condition de collision
-    if (arc.xpos_tir> vaiss.xpos - vaiss.taille or arc.xpos_tir < vaiss.xpos + vaiss.taille) and (arc.ypos_tir > vaiss.ypos + 200 - vaiss.taille or arc.ypos_tir < vaiss.ypos +200+ vaiss.taille):
+    if lar_w==10:
         C.delete(vaiss.imageVaisseau)
         print("Game Over")
 
