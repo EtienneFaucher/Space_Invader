@@ -21,6 +21,7 @@ xpos_tir_vaisseau=490
 ypos_tir_vaisseau=500
 
 class alien:
+
     def __init__(self, vitesse, taille, mw, Xpos):
         
         self.vitesse=vitesse
@@ -30,7 +31,7 @@ class alien:
         self.ypos_tir=ypos_tir_alien
         coord = 10, 50, 240, 210
         self.alien=PhotoImage(file="Images/alien.gif")
-        self.laser=PhotoImage(file="Images/tir.png")
+        #self.laser=PhotoImage(file="Images/tir.png")
 
         self.arc = C.create_image(100,100,image=self.alien)
         self.X=Xpos-50
@@ -56,29 +57,29 @@ class alien:
         C.coords(self.arc ,self.X-self.taille,Y-self.taille)
         # mise a jour 
         self.fenetre.after(80,self.mouvement)
-        
+
         #Fonction lambda (Permet d'ajouter des arguments a la fonction)
         #self.fenetre.after(80,lambda: self.mouvement())
-    def creation_tir(self):#Crée le tir à l'endroit ou est l'alien
-        self.xpos_tir=self.X
-        self.ypos_tir=self.Y
+    #def creation_tir(self):#Crée le tir à l'endroit ou est l'alien
+        #self.xpos_tir=self.X
+        #self.ypos_tir=self.Y
 
-        self.tir = C.create_image(self.xpos_tir, self.ypos_tir,image= self.laser )
+        #self.tir = C.create_image(self.xpos_tir, self.ypos_tir,image= self.laser )
         
-        if self.canShoot:
-            self.tir_alien()
-            self.canShoot = False
+        #if self.canShoot:
+            #self.tir_alien()
+            #self.canShoot = False
 
         #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
-        self.fenetre.after(2100,lambda: C.delete(self.tir))
+        #self.fenetre.after(2100,lambda: C.delete(self.tir))
         
-        self.fenetre.after( random.randint(2100, 2400),self.creation_tir)
+        #self.fenetre.after( random.randint(2100, 2400),self.creation_tir)
 
-    def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
-        self.ypos_tir=self.ypos_tir+3.4
-        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-150)
+    #def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
+        #self.ypos_tir=self.ypos_tir+3.4
+        #C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-150)
         
-        self.fenetre.after(8,self.tir_alien)
+        #self.fenetre.after(8,self.tir_alien)
 
 class vaisseau:
     def __init__(self, vitesse_de_tir, taille_vaisseau):
@@ -99,28 +100,30 @@ class vaisseau:
 
         mw.bind('<Right>', self.droite)
         mw.bind('<Left>', self.gauche)
-        if self.shoot:
-            mw.bind('<space>', self.creation_tir)
+        mw.bind('<space>', self.creation_tir)
 
     def creation_tir(self,event):
         #self.tir1=PhotoImage(file="Images/tir2.png")
         #self.imageTir = C.create_image(self.xpos, self.ypos, image=self.tir1)
-        self.tir = C.create_arc(self.xpos, self.ypos, 275, 75, start=-270, extent=359, fill="yellow")
+        '''self.tir = C.create_arc(self.xpos, self.ypos, 275, 75, start=-270, extent=359, fill="yellow")
         self.xpos_tir=self.xpos
         self.ypos_tir=self.ypos
-        if self.canShoot:
-            
+        if self.canShoot==True:
             self.tir_vaisseau()
             self.canShoot=False
-            self.shoot=False
+            self.shoot=False'''
+        self.tir = C.create_arc(self.xpos, self.ypos, 275, 75, start=-270, extent=359, fill="yellow")
+        self.tir_vaisseau()
+        #mw.after(1000, lambda: C.delete(self.tir))
+
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
-        
         self.ypos_tir=self.ypos_tir-10
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
         mw.after(30,self.tir_vaisseau)
-        if self.ypos_tir>haut_canv:
+        '''if self.ypos_tir>haut_canv:
             C.delete(self.tir)
-            self.shoot=True
+            self.shoot=True'''
+
 
     def droite(self,event):
         posx = 10
@@ -136,6 +139,41 @@ class vaisseau:
 
     #def collision(self):
 
+class missile:
+
+    def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
+        self.ypos_tir=self.ypos_tir+3.4
+        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-150)
+        
+        self.fenetre.after(8,self.tir_alien)
+
+    def __init__(self,X,Y):
+        self.xpos_tir=self.X
+        self.ypos_tir=self.Y
+        self.laser=PhotoImage(file="Images/tir.png")
+
+        self.tir = C.create_image(self.xpos_tir, self.ypos_tir,image= self.laser )
+
+        if self.canShoot:
+            self.tir_alien()
+            self.canShoot = False
+
+        
+        #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
+        self.fenetre.after(2100,lambda: C.delete(self.tir))
+            
+        self.fenetre.after( random.randint(2100, 2400),self.creation_tir)    
+
+    #Fonction permettant de retourner les positions du missile
+    def fGet(self):
+        return (self.xpos_tir, self.ypos_tir)
+    
+    def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
+        self.ypos_tir=self.ypos_tir+3.4
+        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-150)
+        
+        self.fenetre.after(8,self.tir_alien)
+        
 
 class obstacle:
     def __init__(self,posX,posY):
