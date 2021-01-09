@@ -86,7 +86,7 @@ class vaisseau:
         self.tir=vitesse_de_tir
         self.taille= taille_vaisseau
         self.xpos=lar_canv / 2
-        self.ypos=haut_canv / 2
+        self.ypos=480
         self.xpos_tir=xpos_tir_vaisseau
         self.ypos_tir=ypos_tir_vaisseau
         self.vaisseau=PhotoImage(file="Images/vaisseau2.png")
@@ -114,10 +114,13 @@ class vaisseau:
             self.shoot=False'''
         self.tir = C.create_arc(self.xpos, self.ypos, 275, 75, start=-270, extent=359, fill="yellow")
         self.tir_vaisseau()
+        self.ypos_tir=self.ypos
         #mw.after(1000, lambda: C.delete(self.tir))
 
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
+        self.xpos_tir=self.xpos
         self.ypos_tir=self.ypos_tir-10
+        #C.move(self.tir, self.xpos_tir, self.ypos_tir)
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
         mw.after(30,self.tir_vaisseau)
         '''if self.ypos_tir>haut_canv:
