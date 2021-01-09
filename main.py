@@ -14,7 +14,11 @@ haut_w=560
 lar_canv=960
 haut_canv=540
 X=lar_canv/2
-Y=haut_canv/2 
+Y=haut_canv/2
+xpos_tir_alien=300
+ypos_tir_alien=300
+xpos_tir_vaisseau=490
+ypos_tir_vaisseau=500
 
 class alien:
     def __init__(self, vitesse, taille, mw, Xpos):
@@ -22,8 +26,8 @@ class alien:
         self.vitesse=vitesse
         self.taille=taille
         self.fenetre=mw
-        self.xpos_tir=300
-        self.ypos_tir=300
+        self.xpos_tir=xpos_tir_alien
+        self.ypos_tir=ypos_tir_alien
         coord = 10, 50, 240, 210
         self.alien=PhotoImage(file="Images/alien.gif")
         self.laser=PhotoImage(file="Images/tir.png")
@@ -82,16 +86,12 @@ class vaisseau:
         self.taille= taille_vaisseau
         self.xpos=lar_canv / 2
         self.ypos=haut_canv / 2
-        self.xpos_tir=490
-        self.ypos_tir=500
+        self.xpos_tir=xpos_tir_vaisseau
+        self.ypos_tir=ypos_tir_vaisseau
         self.vaisseau=PhotoImage(file="Images/vaisseau2.png")
         #Creation du tir 
         #self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
         #self.tir_vaisseau()
-
-        #Creation du vaisseau (ne s'affiche pas c'est bizarre)
-        #imagevaisseau= PhotoImage(file="Images/vaisseau2.png")
-        #self.vaisseau = C.create_image(self.xpos_tir, self.ypos_tir, image=imagevaisseau)
 
         self.imageVaisseau = C.create_image(self.xpos - self.taille, self.ypos_tir - self.taille, image=self.vaisseau)
 
@@ -101,7 +101,6 @@ class vaisseau:
 
     def creation_tir(self,event):
         #self.tir1=PhotoImage(file="Images/tir2.png")
-
         #self.imageTir = C.create_image(self.xpos, self.ypos, image=self.tir1)
         self.tir = C.create_arc(self.xpos, self.ypos, 275, 75, start=-270, extent=359, fill="yellow")
         self.tir_vaisseau()
@@ -113,7 +112,7 @@ class vaisseau:
         self.ypos_tir=self.ypos_tir-10
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
         mw.after(80,self.tir_vaisseau)
-        mw.after(4000, lambda: C.delete(self.imageTir))
+        #mw.after(4000, lambda: C.delete(self.imageTir))
    
     def droite(self,event):
         posx = 10
@@ -126,6 +125,9 @@ class vaisseau:
         posy=0
         self.xpos = self.xpos + posx
         C.move(self.imageVaisseau, posx, posy)
+
+    #def collision(self):
+
 
 class obstacle:
     def __init__(self,posX,posY):
@@ -143,7 +145,16 @@ def jeu():
     arc=alien(5,50, mw, X)
     arc2=alien(5,50, mw, X+200)
     arc3=alien(5,50, mw, X-200)
-    #mw.bind("<space>", lambda x:vaiss.tir_vaisseau())
+    
+    #test
+    print(arc2.xpos_tir)
+    print(vaiss.xpos)
+    print(vaiss.xpos_tir)
+    print(vaiss.ypos_tir)
+    #condition de collision
+    if (arc.xpos_tir> vaiss.xpos - vaiss.taille or arc.xpos_tir < vaiss.xpos + vaiss.taille) and (arc.ypos_tir > vaiss.ypos + 200 - vaiss.taille or arc.ypos_tir < vaiss.ypos +200+ vaiss.taille):
+        C.delete(vaiss.imageVaisseau)
+        print("Game Over")
 
 # Creation de la fenetre graphique
 mw = Tk()
