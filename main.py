@@ -143,14 +143,20 @@ class vaisseau:
         posx = 10
         posy=0
         self.xpos = self.xpos + posx
-        C.move(self.imageVaisseau, posx, posy)
+        if self.xpos<lar_canv:
 
+            C.move(self.imageVaisseau, posx, posy)
+        else:
+            self.xpos=lar_canv-10
     def gauche(self,event):
         posx = -10
         posy=0
         self.xpos = self.xpos + posx
-        C.move(self.imageVaisseau, posx, posy)
-
+        
+        if self.xpos>33:
+            C.move(self.imageVaisseau, posx, posy)
+        else:
+            self.xpos=35
     #def collision(self):
 
 '''class missile:
