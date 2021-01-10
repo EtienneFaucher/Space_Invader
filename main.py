@@ -44,7 +44,7 @@ class alien:
         self.mouvement()
         self.creation_tir()
         position_vaisseau = C.coords(self.vaisseau.imageVaisseau)[0]
-        
+        collision=True
     def mouvement(self):
         
         
@@ -58,7 +58,6 @@ class alien:
         if self.descente==1:
             self.Y+=70
             self.descente=0
-
 
         self.X=self.X+self.vitesse*self.sens
         C.coords(self.arc ,self.X - self.taille,self.Y - self.taille)#Y-self.taille
@@ -81,14 +80,22 @@ class alien:
             self.canShoot = False
 
         #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
-        self.fenetre.after(2100,lambda: C.delete(self.tir))
+        self.fenetre.after(1800,lambda: C.delete(self.tir))
         
-        self.fenetre.after( random.randint(2100, 2400),self.creation_tir)
+        self.fenetre.after( random.randint(4100, 5400),self.creation_tir)
 
     def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
         self.ypos_tir=self.ypos_tir+3.4
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir)
         self.fenetre.after(8,self.tir_alien)
+        
+        if (self.xpos_tir <= C.coords(self.vaisseau.imageVaisseau)[0]) and ((self.xpos_tir >= C.coords(self.vaisseau.imageVaisseau)[0]-self.vaisseau.taille)) and (self.ypos_tir  >= C.coords(self.vaisseau.imageVaisseau)[1]) and (self.ypos_tir  <= C.coords(self.vaisseau.imageVaisseau)[1])+self.vaisseau.taille:
+            if collision:
+                collision=False
+                #C.delete(self.vaisseau.imageVaisseau)
+                print("Game over")
+                C.delete(self.tir)
+                self.fenetre.after(80, collision=True)
 
 class vaisseau:
     def __init__(self, vitesse_de_tir, taille_vaisseau):
@@ -236,7 +243,7 @@ def jeu():
 
     alien6 = alien(C,7, 50, mw, X, 100, "Images/alien2.png", "Images/tir4.png", vaiss)
     alien7 = alien(C,7, 50, mw, X+500, 100, "Images/alien2.png", "Images/tir4.png", vaiss)
-    alien8 = alien(C,7, 50, mw, X-600, 100, "Images/alien2.png", "Images/tir4.png", vaiss)
+    alien8 = alien(C,7, 50, mw, X-300, 100, "Images/alien2.png", "Images/tir4.png", vaiss)
 
     # aliens plus rapides
     '''
@@ -247,7 +254,7 @@ def jeu():
 
     #test
     print(alien2.xpos_tir)
-    print(vaiss.imageVaisseau.coords[0])
+    #print(vaiss.imageVaisseau.coords[0])
     print(vaiss.xpos_tir)
     print(vaiss.ypos_tir)
 
