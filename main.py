@@ -27,6 +27,7 @@ class alien:
         self.vitesse = vitesse
         self.taille = taille
         self.fenetre = mw
+        self.descente=0
         self.xpos_tir = xpos_tir_alien
         self.ypos_tir = ypos_tir_alien
         self.canvas = canvas
