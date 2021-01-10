@@ -6,8 +6,7 @@ TODO : Fontions d'appels de fonction (tir et deplacement vaisseau)
 Pareil pour le debut du jeu quand on appuie sur jouer
 """
 import random
-from tkinter import *
-#Tk, Label, Button, Frame, Entry, PhotoImage, Canvas, Menu
+from tkinter import Tk, Label, Button, Frame, Entry, PhotoImage, Canvas, Menu
 
 #Variables
 lar_w=580
@@ -23,18 +22,18 @@ ypos_tir_vaisseau=500
 
 class alien:
 
-    def __init__(self, vitesse, taille, mw, Xpos, Ypos, image_alien, image_tir):
+    def __init__(self, canvas, vitesse, taille, mw, Xpos, Ypos, image_alien, image_tir, vaisseau):
         
-        self.vitesse=vitesse
-        self.descente=0
-        self.taille=taille
-        self.fenetre=mw
-        self.xpos_tir=xpos_tir_alien
-        self.ypos_tir=ypos_tir_alien
+        self.vitesse = vitesse
+        self.taille = taille
+        self.fenetre = mw
+        self.xpos_tir = xpos_tir_alien
+        self.ypos_tir = ypos_tir_alien
+        self.canvas = canvas
         coord = 10, 50, 240, 210
-        self.alien=PhotoImage(file=image_alien)
-        self.laser=PhotoImage(file=image_tir)
-
+        self.alien = PhotoImage(file=image_alien)
+        self.laser = PhotoImage(file=image_tir)
+        self.vaisseau = vaisseau 
         self.arc = C.create_image(100,100,image=self.alien)
         self.X= Xpos-50
         self.Y= Ypos
@@ -43,6 +42,7 @@ class alien:
          #Creation du tir 
         self.mouvement()
         self.creation_tir()
+        position_vaisseau = C.coords(self.vaisseau.imageVaisseau)[0]
         
     def mouvement(self):
         
@@ -63,7 +63,8 @@ class alien:
         C.coords(self.arc ,self.X - self.taille,self.Y - self.taille)#Y-self.taille
         # mise a jour 
         self.fenetre.after(80,self.mouvement)
-        
+        '''if C.coords(self.tir)[0] > C.coords(self.vaisseau.imageVaisseau)[0] and C.coords(self.tir)[0] < C.coords(self.vaisseau.imageVaisseau)[2] and C.coords(self.tir)[3] > C.coords(self.vaisseau.imageVaisseau)[1]:
+            C.delete(self.vaisseau.imageVaisseau)'''
         #Fonction lambda (Permet d'ajouter des arguments a la fonction)
         #self.fenetre.after(80,lambda: self.mouvement())
         
@@ -149,11 +150,12 @@ class vaisseau:
         posx = 10
         posy=0
         self.xpos = self.xpos + posx
-        if self.xpos<lar_canv:
 
+        if self.xpos<lar_canv:
             C.move(self.imageVaisseau, posx, posy)
         else:
             self.xpos=lar_canv-10
+
     def gauche(self,event):
         posx = -10
         posy=0
@@ -215,22 +217,25 @@ class obstacle:
 def jeu():
     print("Lancement du jeu")
     ButtonJouer.destroy()
+
     vaiss = vaisseau(10,20)
+
     obs1 = obstacle(80, 380)
     obs2 = obstacle(300,380)
     obs3 = obstacle(500,380)
     obs4 = obstacle(700,380)
     obs5 = obstacle(900,380)
-    alien0 = alien(5,50, mw, X, 180, "Images/alien.png", "Images/tir.png")
-    alien1 = alien(5,50, mw, X+400, 180, "Images/alien5.png", "Images/tir.png")
-    alien2 = alien(5,50, mw, X+200, 180, "Images/alien.png", "Images/tir.png")
-    alien3 = alien(5,50, mw, X-200, 180, "Images/alien5.png", "Images/tir.png")
-    alien4 = alien(5,50, mw, X-400, 180, "Images/alien.png", "Images/tir.png")
-    alien5 = alien(5,50, mw, X-600, 180, "Images/alien5.png", "Images/tir.png")
+    
+    alien0 = alien(C,5,50, mw, X, 180, "Images/alien.png", "Images/tir.png", vaiss)
+    alien1 = alien(C,5,50, mw, X+400, 180, "Images/alien5.png", "Images/tir.png", vaiss)
+    alien2 = alien(C,5,50, mw, X+200, 180, "Images/alien.png", "Images/tir.png", vaiss)
+    alien3 = alien(C,5,50, mw, X-200, 180, "Images/alien5.png", "Images/tir.png", vaiss)
+    alien4 = alien(C,5,50, mw, X-400, 180, "Images/alien.png", "Images/tir.png", vaiss)
+    alien5 = alien(C,5,50, mw, X-600, 180, "Images/alien5.png", "Images/tir.png", vaiss)
 
-    alien6 = alien(7, 50, mw, X, 100, "Images/alien2.png", "Images/tir4.png")
-    alien7 = alien(7, 50, mw, X+500, 100, "Images/alien2.png", "Images/tir4.png")
-    alien8 = alien(7, 50, mw, X-600, 100, "Images/alien2.png", "Images/tir4.png")
+    alien6 = alien(C,7, 50, mw, X, 100, "Images/alien2.png", "Images/tir4.png", vaiss)
+    alien7 = alien(C,7, 50, mw, X+500, 100, "Images/alien2.png", "Images/tir4.png", vaiss)
+    alien8 = alien(C,7, 50, mw, X-600, 100, "Images/alien2.png", "Images/tir4.png", vaiss)
 
     # aliens plus rapides
     '''
