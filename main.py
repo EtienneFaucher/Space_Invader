@@ -26,6 +26,7 @@ class alien:
     def __init__(self, vitesse, taille, mw, Xpos, Ypos, image_alien, image_tir):
         
         self.vitesse=vitesse
+        self.descente=0
         self.taille=taille
         self.fenetre=mw
         self.xpos_tir=xpos_tir_alien
@@ -44,7 +45,7 @@ class alien:
         self.creation_tir()
         
     def mouvement(self):
-        Y=haut_canv/6
+        
         
         if self.X+self.taille > lar_canv:
             self.sens=-1
@@ -52,15 +53,20 @@ class alien:
         
         if self.X-self.taille/2 < 0:
             self.sens=1
+            self.descente =1
+        if self.descente==1:
+            self.Y+=70
+            self.descente=0
+
 
         self.X=self.X+self.vitesse*self.sens
         C.coords(self.arc ,self.X - self.taille,self.Y - self.taille)#Y-self.taille
         # mise a jour 
         self.fenetre.after(80,self.mouvement)
-
+        
         #Fonction lambda (Permet d'ajouter des arguments a la fonction)
         #self.fenetre.after(80,lambda: self.mouvement())
-
+        
     def creation_tir(self):#Crée le tir à l'endroit ou est l'alien
 
         self.xpos_tir=self.X
@@ -79,7 +85,7 @@ class alien:
 
     def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
         self.ypos_tir=self.ypos_tir+3.4
-        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-150)
+        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir)
         self.fenetre.after(8,self.tir_alien)
 
 class vaisseau:
@@ -201,7 +207,10 @@ class obstacle:
         self.obs_y=posY
         self.obs=PhotoImage(file="Images/obstacle.png")
         self.obstacle = C.create_image(self.obs_x,self.obs_y, image=self.obs)
-
+    def retourpos(self):
+        return(self.obs_x)
+        return(self.obs_y)
+        
 #lancement du jeu
 def jeu():
     print("Lancement du jeu")
@@ -241,6 +250,12 @@ def jeu():
         C.delete(vaiss.imageVaisseau)
         print("Game Over")
 
+def propos():
+    propos_window=Tk()
+    propos_window.title("A propos de notre jeux")
+    txt_lbl=Label(propos_window, text="A propos:\n\n\n Jeu développé en Python ! !\n\n\n Createurs: Silia et Etienne :)")
+    txt_lbl.pack(padx=100,pady=100)
+    propos_window.mainloop()
 # Creation de la fenetre graphique
 mw = Tk()
 mw.title('Space Invader')
@@ -253,12 +268,15 @@ menubar= Menu(mw)
 menufichier= Menu(menubar,tearoff=0)
 menufichier.add_command(label="Quitter", command = mw.destroy)
 menufichier.add_command(label="Jouer",command=jeu)
+menufichier.add_command(label="A propos",command=propos)
 menubar.add_cascade(label="Fichier", menu=menufichier)
 mw.config(menu=menubar)
 
 #Zone de texte
 score= Label(mw, bg="darkgray", text="Votre Score :")
 score.pack(padx=0, pady=0)
+vie= Label(mw, bg="darkgray", text="Nombre de vies restantes :")
+vie.pack(padx=0, pady=0)
 
 #Bouton debut de partie
 ButtonJouer=Button(mw,text='Jouer',command=jeu)
@@ -274,5 +292,8 @@ C.pack()
 ButtonQuitter=Button(mw,text='Quitter',command=mw.destroy)
 ButtonQuitter.pack(padx=50, pady=0)
 
+#Bouton A propos
+ButtonPropos=Button(mw,text='A propos',command=propos)
+ButtonPropos.pack(padx=50, pady=0)
 #lancement du gestionnaire d'evenements
 mw.mainloop()
