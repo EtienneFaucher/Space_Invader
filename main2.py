@@ -325,38 +325,3 @@ ButtongameOver=Button(mw,text='A gameOver',command=gameOver)
 ButtongameOver.pack(padx=50, pady=0)
 #lancement du gestionnaire d'evenements
 mw.mainloop()
-
-'''class missile:
-
-    def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
-        self.ypos_tir=self.ypos_tir+3.4
-        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-150)
-        
-        self.fenetre.after(8,self.tir_alien)
-
-    def __init__(self,X,Y):
-        self.xpos_tir=self.X
-        self.ypos_tir=self.Y
-        self.laser=PhotoImage(file="Images/tir.png")
-
-        self.tir = C.create_image(self.xpos_tir, self.ypos_tir,image= self.laser )
-
-        if self.canShoot:
-            self.tir_alien()
-            self.canShoot = False
-
-        
-        #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
-        self.fenetre.after(2100,lambda: C.delete(self.tir))
-            
-        self.fenetre.after( random.randint(2100, 2400),self.creation_tir)    
-
-    #Fonction permettant de retourner les positions du missile
-    def fGet(self):
-        return (self.xpos_tir, self.ypos_tir)
-    
-    def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
-        self.ypos_tir=self.ypos_tir+3.4
-        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-150)
-        
-        self.fenetre.after(8,self.tir_alien)'''
