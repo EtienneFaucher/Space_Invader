@@ -50,6 +50,11 @@ class alien:
         self.creation_tir()
         position_vaisseau = C.coords(self.vaisseau.imageVaisseau)[0]
         collision=True
+        self.detruit1= False
+        self.detruit2= False
+        self.detruit3= False
+        self.detruit4= False
+        self.detruit5= False
 
     def mouvement(self):
         #print(C.coords(self.vaisseau.imageVaisseau)[1])
@@ -85,12 +90,12 @@ class alien:
 
         #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
         #self.fenetre.after(1000,lambda: C.delete(self.tir))
-        self.fenetre.after( random.randint(3100, 3500),self.creation_tir)
-        if self.ypos_tir > 300:
+        self.fenetre.after( random.randint(4100, 4500),self.creation_tir)
+        if self.ypos_tir > haut_canv - 100:
             C.delete(self.tir)
 
     def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
-        self.ypos_tir=self.ypos_tir+1.4
+        self.ypos_tir=self.ypos_tir+1
         C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir)
         self.fenetre.after(8,self.tir_alien)
         if self.ypos_tir > haut_canv-50:
@@ -100,33 +105,48 @@ class alien:
             print("Obstacle1 touché")
             C.delete(self.tir)
             C.delete(self.obstacle1.obstacle)
+            self.obstacle1.obs_x = self.xpos_tir +35
+            #self.detruit1 == True
         if (self.xpos_tir >= self.obstacle2.obs_x -30 ) and (self.xpos_tir <= self.obstacle2.obs_x + 30) and (self.ypos_tir  >= self.obstacle2.obs_y):
             print("Obstacle2 touché")
             C.delete(self.tir)
             C.delete(self.obstacle2.obstacle)
+            self.obstacle1.obs_x = self.xpos_tir +35
+            #self.detruit2 == True
         if (self.xpos_tir >= self.obstacle3.obs_x -30) and (self.xpos_tir <= self.obstacle3.obs_x + 30) and (self.ypos_tir  >= self.obstacle3.obs_y):
             print("Obstacle3 touché")
             C.delete(self.tir)
             C.delete(self.obstacle3.obstacle)
+            self.obstacle1.obs_x = self.xpos_tir +35
+            #self.detruit3 == True
         if (self.xpos_tir >= self.obstacle4.obs_x -30) and (self.xpos_tir <= self.obstacle4.obs_x + 30) and (self.ypos_tir  >= self.obstacle4.obs_y):
             print("Obstacle4 touché")
             C.delete(self.tir)
             C.delete(self.obstacle4.obstacle)
+            self.obstacle1.obs_x = self.xpos_tir +35
+            #self.detruit4 == True
         if (self.xpos_tir >= self.obstacle5.obs_x -30) and (self.xpos_tir <= self.obstacle5.obs_x + 30) and (self.ypos_tir  >= self.obstacle5.obs_y):
             print("Obstacle5 touché")
             C.delete(self.tir)
             C.delete(self.obstacle5.obstacle)
+            self.obstacle1.obs_x = self.xpos_tir +35
+            #self.detruit == True
 
-        if (self.xpos_tir >= C.coords(self.vaisseau.imageVaisseau)[0] -50) and (self.xpos_tir <= C.coords(self.vaisseau.imageVaisseau)[0] +50) and (self.ypos_tir  >= C.coords(self.vaisseau.imageVaisseau)[1]):
-            print("- 1 vie")
-            C.delete(self.tir)
-            #C.delete(self.vaisseau.imageVaisseau)
-            '''if collision:
-                collision=False
-                #C.delete(self.vaisseau.imageVaisseau)
-                print("Game over")
+        if (self.xpos_tir >= C.coords(self.vaisseau.imageVaisseau)[0] -40) and (self.xpos_tir <= C.coords(self.vaisseau.imageVaisseau)[0] +40) and (self.ypos_tir  >= C.coords(self.vaisseau.imageVaisseau)[1]):
+            if self.vaisseau.vie > 1:
                 C.delete(self.tir)
-                self.fenetre.after(80, collision=True)'''
+                self.vaisseau.vie = self.vaisseau.vie - 1
+                print("vie =", self.vaisseau.vie)
+            if self.vaisseau.vie == 1:
+                #C.delete(self.vaisseau.imageVaisseau)
+                mw.destroy()
+                gameOver_window=Tk()
+                gameOver_window.title("Game Over")
+                txt_lbl=Label(gameOver_window, text="GAME OVER!\n\n\n Jeu développé en Python ! !\n\n\n Createurs: Silia et Etienne :)")
+                txt_lbl.pack(padx=100,pady=100)
+                bouton_rejouer = Button(gameOver_window, text = "Rejouer", command = jeu)
+                bouton_rejouer.pack(padx=50, pady=0)
+                gameOver_window.mainloop()
 
 class vaisseau:
     def __init__(self, vitesse_de_tir, taille_vaisseau):
@@ -140,6 +160,7 @@ class vaisseau:
         self.imageTir=PhotoImage(file="Images/tir2.png")
         self.canShoot=True
         self.shoot=True
+        self.vie = 5
         #Creation du tir 
         #self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
         #self.tir_vaisseau()
@@ -257,12 +278,12 @@ def jeu():
         C.delete(vaiss.imageVaisseau)
         print("Game Over")
 
-def propos():
-    propos_window=Tk()
-    propos_window.title("A propos de notre jeux")
-    txt_lbl=Label(propos_window, text="A propos:\n\n\n Jeu développé en Python ! !\n\n\n Createurs: Silia et Etienne :)")
+def gameOver():
+    gameOver_window=Tk()
+    gameOver_window.title("A gameOver de notre jeux")
+    txt_lbl=Label(gameOver_window, text="A gameOver:\n\n\n Jeu développé en Python ! !\n\n\n Createurs: Silia et Etienne :)")
     txt_lbl.pack(padx=100,pady=100)
-    propos_window.mainloop()
+    gameOver_window.mainloop()
 # Creation de la fenetre graphique
 mw = Tk()
 mw.title('Space Invader')
@@ -275,7 +296,7 @@ menubar= Menu(mw)
 menufichier= Menu(menubar,tearoff=0)
 menufichier.add_command(label="Quitter", command = mw.destroy)
 menufichier.add_command(label="Jouer",command=jeu)
-menufichier.add_command(label="A propos",command=propos)
+menufichier.add_command(label="A gameOver",command=gameOver)
 menubar.add_cascade(label="Fichier", menu=menufichier)
 mw.config(menu=menubar)
 
@@ -299,9 +320,9 @@ C.pack()
 ButtonQuitter=Button(mw,text='Quitter',command=mw.destroy)
 ButtonQuitter.pack(padx=50, pady=0)
 
-#Bouton A propos
-ButtonPropos=Button(mw,text='A propos',command=propos)
-ButtonPropos.pack(padx=50, pady=0)
+#Bouton A gameOver
+ButtongameOver=Button(mw,text='A gameOver',command=gameOver)
+ButtongameOver.pack(padx=50, pady=0)
 #lancement du gestionnaire d'evenements
 mw.mainloop()
 

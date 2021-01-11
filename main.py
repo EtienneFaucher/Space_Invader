@@ -65,6 +65,10 @@ def jeu():
         C.delete(vaiss.imageVaisseau)
         print("Game Over")
 
+    #def rejouer():
+        
+
+
 def propos():
     propos_window=Tk()
     propos_window.title("A propos de notre jeux")
