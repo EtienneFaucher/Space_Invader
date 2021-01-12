@@ -19,7 +19,7 @@ xpos_tir_alien=300
 ypos_tir_alien=300
 xpos_tir_vaisseau=490
 ypos_tir_vaisseau=500
-
+nbrvie=3
 class alien:
     
     def __init__(self, canvas, vitesse, taille, mw, Xpos, Ypos, image_alien, image_tir, vaisseau, obstacle1, obstacle2, obstacle3, obstacle4, obstacle5):
@@ -273,17 +273,13 @@ def jeu():
     print(vaiss.xpos_tir)
     print(vaiss.ypos_tir)
 
-    #condition de collision
-    if lar_w==10:
-        C.delete(vaiss.imageVaisseau)
-        print("Game Over")
 
-def gameOver():
-    gameOver_window=Tk()
-    gameOver_window.title("A gameOver de notre jeux")
-    txt_lbl=Label(gameOver_window, text="A gameOver:\n\n\n Jeu développé en Python ! !\n\n\n Createurs: Silia et Etienne :)")
+def propos():
+    apropos_window=Tk()
+    apropos_window.title("A propos de notre jeux")
+    txt_lbl=Label(apropos_window, text="A propos:\n\n\n Jeu développé en Python ! !\n\n\n Createurs: Silia et Etienne :)")
     txt_lbl.pack(padx=100,pady=100)
-    gameOver_window.mainloop()
+    apropos_window.mainloop()
 # Creation de la fenetre graphique
 mw = Tk()
 mw.title('Space Invader')
@@ -296,14 +292,14 @@ menubar= Menu(mw)
 menufichier= Menu(menubar,tearoff=0)
 menufichier.add_command(label="Quitter", command = mw.destroy)
 menufichier.add_command(label="Jouer",command=jeu)
-menufichier.add_command(label="A gameOver",command=gameOver)
+menufichier.add_command(label="A propos",command=propos)
 menubar.add_cascade(label="Fichier", menu=menufichier)
 mw.config(menu=menubar)
 
 #Zone de texte
 score= Label(mw, bg="darkgray", text="Votre Score :")
 score.pack(padx=0, pady=0)
-vie= Label(mw, bg="darkgray", text="Nombre de vies restantes :")
+vie= Label(mw, bg="darkgray", text="Nombre de vies restantes :", textvariable=nbrvie)
 vie.pack(padx=0, pady=0)
 
 #Bouton debut de partie
@@ -320,8 +316,8 @@ C.pack()
 ButtonQuitter=Button(mw,text='Quitter',command=mw.destroy)
 ButtonQuitter.pack(padx=50, pady=0)
 
-#Bouton A gameOver
-ButtongameOver=Button(mw,text='A gameOver',command=gameOver)
-ButtongameOver.pack(padx=50, pady=0)
+#Bouton A propos
+Buttonpropos=Button(mw,text='A propos',command=propos)
+Buttonpropos.pack(padx=50, pady=0)
 #lancement du gestionnaire d'evenements
 mw.mainloop()
