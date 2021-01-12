@@ -1,10 +1,11 @@
 """
-qui : Etienne FAucher   
+qui : Etienne Faucher / Silia Taider
 quand : le 08/12/2020 
-Interface graphique du pendu
+Jeu Space invader
 TODO : Fontions d'appels de fonction (tir et deplacement vaisseau)
 Pareil pour le debut du jeu quand on appuie sur jouer
 """
+#On importe les modules
 import random
 from tkinter import Tk, Label, Button, Frame, Entry, PhotoImage, Canvas, Menu
 
@@ -20,8 +21,10 @@ ypos_tir_alien=300
 xpos_tir_vaisseau=490
 ypos_tir_vaisseau=500
 nbrvie=3
+
+#On crée notre premiere classe "alien", qui va nous permettre des créer les differents méchants du jeu.
 class alien:
-    
+    #On initialise ici toutes les variables utiles. ON en importe certaine depuis le programme principal.
     def __init__(self, canvas, vitesse, taille, mw, Xpos, Ypos, image_alien, image_tir, vaisseau, obstacle1, obstacle2, obstacle3, obstacle4, obstacle5):
         
         self.vitesse = vitesse
@@ -78,13 +81,12 @@ class alien:
         #self.fenetre.after(80,lambda: self.mouvement())
         
     def creation_tir(self):#Crée le tir à l'endroit ou est l'alien
-
         self.xpos_tir=self.X
         self.ypos_tir=self.Y
 
-        self.tir = C.create_image(self.xpos_tir, self.ypos_tir, image=self.laser )
         
         if self.canShoot:
+            self.tir = C.create_image(self.xpos_tir, self.ypos_tir, image=self.laser )
             self.tir_alien()
             self.canShoot = False
 
@@ -93,61 +95,74 @@ class alien:
         self.fenetre.after( random.randint(4100, 4500),self.creation_tir)
         if self.ypos_tir > haut_canv - 100:
             C.delete(self.tir)
-
-    def tir_alien(self): #Deplacement du tir a partir du moment ou il est envoye
-        self.ypos_tir=self.ypos_tir+1
-        C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir)
-        self.fenetre.after(8,self.tir_alien)
-        if self.ypos_tir > haut_canv-50:
-            C.delete(self.tir)
-
-        if (self.xpos_tir >= self.obstacle1.obs_x - 30) and (self.xpos_tir <= self.obstacle1.obs_x + 50) and (self.ypos_tir  >= self.obstacle1.obs_y):
-            print("Obstacle1 touché")
-            C.delete(self.tir)
-            C.delete(self.obstacle1.obstacle)
-            self.obstacle1.obs_x = self.xpos_tir +35
-            #self.detruit1 == True
-        if (self.xpos_tir >= self.obstacle2.obs_x -30 ) and (self.xpos_tir <= self.obstacle2.obs_x + 30) and (self.ypos_tir  >= self.obstacle2.obs_y):
-            print("Obstacle2 touché")
-            C.delete(self.tir)
-            C.delete(self.obstacle2.obstacle)
-            self.obstacle1.obs_x = self.xpos_tir +35
-            #self.detruit2 == True
-        if (self.xpos_tir >= self.obstacle3.obs_x -30) and (self.xpos_tir <= self.obstacle3.obs_x + 30) and (self.ypos_tir  >= self.obstacle3.obs_y):
-            print("Obstacle3 touché")
-            C.delete(self.tir)
-            C.delete(self.obstacle3.obstacle)
-            self.obstacle1.obs_x = self.xpos_tir +35
-            #self.detruit3 == True
-        if (self.xpos_tir >= self.obstacle4.obs_x -30) and (self.xpos_tir <= self.obstacle4.obs_x + 30) and (self.ypos_tir  >= self.obstacle4.obs_y):
-            print("Obstacle4 touché")
-            C.delete(self.tir)
-            C.delete(self.obstacle4.obstacle)
-            self.obstacle1.obs_x = self.xpos_tir +35
-            #self.detruit4 == True
-        if (self.xpos_tir >= self.obstacle5.obs_x -30) and (self.xpos_tir <= self.obstacle5.obs_x + 30) and (self.ypos_tir  >= self.obstacle5.obs_y):
-            print("Obstacle5 touché")
-            C.delete(self.tir)
-            C.delete(self.obstacle5.obstacle)
-            self.obstacle1.obs_x = self.xpos_tir +35
-            #self.detruit == True
-
-        if (self.xpos_tir >= C.coords(self.vaisseau.imageVaisseau)[0] -40) and (self.xpos_tir <= C.coords(self.vaisseau.imageVaisseau)[0] +40) and (self.ypos_tir  >= C.coords(self.vaisseau.imageVaisseau)[1]):
-            if self.vaisseau.vie > 1:
+        
+    def tir_alien(self): #Deplacement du tir a partir du moment ou il est créé.
+        afterTir=None
+        if self.tir:
+            
+            self.ypos_tir=self.ypos_tir+1
+            C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir)
+            afterTir=self.fenetre.after(8,self.tir_alien)
+            if self.ypos_tir > haut_canv-50:
                 C.delete(self.tir)
-                self.vaisseau.vie = self.vaisseau.vie - 1
-                print("vie =", self.vaisseau.vie)
-            if self.vaisseau.vie == 1:
-                #C.delete(self.vaisseau.imageVaisseau)
-                mw.destroy()
-                gameOver_window=Tk()
-                gameOver_window.title("Game Over")
-                txt_lbl=Label(gameOver_window, text="GAME OVER!\n\n\n Jeu développé en Python ! !\n\n\n Createurs: Silia et Etienne :)")
-                txt_lbl.pack(padx=100,pady=100)
-                bouton_rejouer = Button(gameOver_window, text = "Rejouer", command = jeu)
-                bouton_rejouer.pack(padx=50, pady=0)
-                gameOver_window.mainloop()
 
+            if (self.xpos_tir >= self.obstacle1.obs_x - 30) and (self.xpos_tir <= self.obstacle1.obs_x + 50) and (self.ypos_tir  >= self.obstacle1.obs_y):
+                print("Obstacle1 touché")
+                C.delete(self.tir)
+                self.tir=None
+                C.delete(self.obstacle1.obstacle)
+                self.obstacle1.obs_x = self.xpos_tir +35
+                #self.detruit1 == True
+            if (self.xpos_tir >= self.obstacle2.obs_x -30 ) and (self.xpos_tir <= self.obstacle2.obs_x + 30) and (self.ypos_tir  >= self.obstacle2.obs_y):
+                print("Obstacle2 touché")
+                C.delete(self.tir)
+                self.tir=None
+                C.delete(self.obstacle2.obstacle)
+                self.obstacle1.obs_x = self.xpos_tir +35
+                #self.detruit2 == True
+            if (self.xpos_tir >= self.obstacle3.obs_x -30) and (self.xpos_tir <= self.obstacle3.obs_x + 30) and (self.ypos_tir  >= self.obstacle3.obs_y):
+                print("Obstacle3 touché")
+                C.delete(self.tir)
+                self.tir=None
+                C.delete(self.obstacle3.obstacle)
+                self.obstacle1.obs_x = self.xpos_tir +35
+                #self.detruit3 == True
+            if (self.xpos_tir >= self.obstacle4.obs_x -30) and (self.xpos_tir <= self.obstacle4.obs_x + 30) and (self.ypos_tir  >= self.obstacle4.obs_y):
+                print("Obstacle4 touché")
+                C.delete(self.tir)
+                self.tir=None
+                C.delete(self.obstacle4.obstacle)
+                self.obstacle1.obs_x = self.xpos_tir +35
+                #self.detruit4 == True
+            if (self.xpos_tir >= self.obstacle5.obs_x -30) and (self.xpos_tir <= self.obstacle5.obs_x + 30) and (self.ypos_tir  >= self.obstacle5.obs_y):
+                print("Obstacle5 touché")
+                C.delete(self.tir)
+                self.tir=None
+
+                C.delete(self.obstacle5.obstacle)
+                self.obstacle1.obs_x = self.xpos_tir +35
+                #self.detruit == True
+
+            if (self.xpos_tir >= C.coords(self.vaisseau.imageVaisseau)[0] -40) and (self.xpos_tir <= C.coords(self.vaisseau.imageVaisseau)[0] +40) and (self.ypos_tir  >= C.coords(self.vaisseau.imageVaisseau)[1]):
+                if self.vaisseau.vie > 1:
+                    C.delete(self.tir)
+                    self.tir=None
+                    self.vaisseau.vie = self.vaisseau.vie - 1
+                    print("vie =", self.vaisseau.vie)
+                if self.vaisseau.vie == 1:
+                    #C.delete(self.vaisseau.imageVaisseau)
+                    mw.destroy()
+                    gameOver_window=Tk()
+                    gameOver_window.title("Game Over")
+                    txt_lbl=Label(gameOver_window, text="GAME OVER!\n\n\n Jeu développé en Python ! !\n\n\n Createurs: Silia et Etienne :)")
+                    txt_lbl.pack(padx=100,pady=100)
+                    bouton_rejouer = Button(gameOver_window, text = "Rejouer", command = jeu)
+                    bouton_rejouer.pack(padx=50, pady=0)
+                    gameOver_window.mainloop()
+        elif afterTir:
+            self.fenetre.after_cancel(afterTir)
+        else:
+            self.canShoot=True   
 class vaisseau:
     def __init__(self, vitesse_de_tir, taille_vaisseau):
         self.tir=vitesse_de_tir
@@ -184,15 +199,18 @@ class vaisseau:
             self.canShoot=False
             self.shoot=False'''
         #self.tir = C.create_arc(self.xpos, self.ypos, 275, 75, start=-270, extent=359, fill="yellow")
-        self.tir_vaisseau()
+        
+        #self.tir_vaisseau()
         #self.ypos_tir=self.ypos
-        mw.after(1500, lambda: C.delete(self.tir))
+        #mw.after(1500, lambda: C.delete(self.tir))
         '''if self.canShoot:
             self.tir_vaisseau()
             mw.after(1500, lambda: C.delete(self.tir))
             self.canShoot = False'''
-        self.tir_vaisseau()
-        mw.after(2000, lambda: C.delete(self.tir))    
+        if self.canShoot:
+            self.tir_vaisseau()
+            mw.after(2000, lambda: C.delete(self.tir)) 
+            self.canShoot=False   
 
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
         self.xpos_tir=self.xpos
