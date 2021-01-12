@@ -111,25 +111,25 @@ class alien:
             print("Obstacle2 touché")
             C.delete(self.tir)
             C.delete(self.obstacle2.obstacle)
-            self.obstacle1.obs_x = self.xpos_tir +35
+            self.obstacle2.obs_x = self.xpos_tir +35
             #self.detruit2 == True
         if (self.xpos_tir >= self.obstacle3.obs_x -30) and (self.xpos_tir <= self.obstacle3.obs_x + 30) and (self.ypos_tir  >= self.obstacle3.obs_y):
             print("Obstacle3 touché")
             C.delete(self.tir)
             C.delete(self.obstacle3.obstacle)
-            self.obstacle1.obs_x = self.xpos_tir +35
+            self.obstacle3.obs_x = self.xpos_tir +35
             #self.detruit3 == True
         if (self.xpos_tir >= self.obstacle4.obs_x -30) and (self.xpos_tir <= self.obstacle4.obs_x + 30) and (self.ypos_tir  >= self.obstacle4.obs_y):
             print("Obstacle4 touché")
             C.delete(self.tir)
             C.delete(self.obstacle4.obstacle)
-            self.obstacle1.obs_x = self.xpos_tir +35
+            self.obstacle4.obs_x = self.xpos_tir +35
             #self.detruit4 == True
         if (self.xpos_tir >= self.obstacle5.obs_x -30) and (self.xpos_tir <= self.obstacle5.obs_x + 30) and (self.ypos_tir  >= self.obstacle5.obs_y):
             print("Obstacle5 touché")
             C.delete(self.tir)
             C.delete(self.obstacle5.obstacle)
-            self.obstacle1.obs_x = self.xpos_tir +35
+            self.obstacle5.obs_x = self.xpos_tir +35
             #self.detruit == True
 
         if (self.xpos_tir >= C.coords(self.vaisseau.imageVaisseau)[0] -40) and (self.xpos_tir <= C.coords(self.vaisseau.imageVaisseau)[0] +40) and (self.ypos_tir  >= C.coords(self.vaisseau.imageVaisseau)[1]):
@@ -160,7 +160,7 @@ class vaisseau:
         self.imageTir=PhotoImage(file="Images/tir2.png")
         self.canShoot=True
         self.shoot=True
-        self.vie = 5
+        self.vie = 15
         #Creation du tir 
         #self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
         #self.tir_vaisseau()
@@ -202,9 +202,8 @@ class vaisseau:
         #C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
         C.move(self.tir, 0, -10)
         mw.after(50,self.tir_vaisseau)
-        '''if self.ypos_tir>haut_canv:
-            C.delete(self.tir)
-            self.shoot=True'''
+        alien_touche()
+
 
     def droite(self,event):
         posx = 10
@@ -225,7 +224,58 @@ class vaisseau:
             C.move(self.imageVaisseau, posx, posy)
         else:
             self.xpos=35
-    #def collision(self):
+
+    def init2(self,alien0, alien1, alien2, alien3, alien4, alien5, alien6, alien7, alien8):
+
+        self.alien0 = alien0
+        self.alien1 = alien1
+        self.alien2 = alien2
+        self.alien3 = alien3
+        self.alien4 = alien4
+        self.alien5 = alien5
+        self.alien6 = alien6
+        self.alien7 = alien7
+        self.alien8 = alien8
+ 
+    def alien_touche(self):
+        print(self.xpos_tir, self.alien0.xpos_tir)
+        if ((self.xpos_tir >= self.alien0.xpos_tir -50) or (self.xpos_tir <= self.alien0.xpos_tir + 50)) and (self.ypos_tir  <= self.alien0.ypos_tir):
+            print("alien0 touché")
+            C.delete(self.tir)
+            C.delete(self.alien0.arc)
+        if ((self.xpos_tir >= self.alien1.xpos_tir -50) or (self.xpos_tir <= self.alien1.xpos_tir + 50)) and (self.ypos_tir  <= self.alien1.ypos_tir):
+            print("alien1 touché")
+            C.delete(self.tir)
+            C.delete(self.alien1.arc)
+        if ((self.xpos_tir >= self.alien2.xpos_tir -50) or (self.xpos_tir <= self.alien2.xpos_tir + 50)) and (self.ypos_tir  <= self.alien2.ypos_tir):
+            print("alien2 touché")
+            C.delete(self.tir)
+            C.delete(self.alien2.arc)
+        if ((self.xpos_tir >= self.alien3.xpos_tir -50) or (self.xpos_tir <= self.alien3.xpos_tir + 50)) and (self.ypos_tir  <= self.alien3.ypos_tir):
+            print("alien3 touché")
+            C.delete(self.tir)
+            C.delete(self.alien3.arc)
+        if ((self.xpos_tir >= self.alien4.xpos_tir -50) or (self.xpos_tir <= self.alien4.xpos_tir + 50)) and (self.ypos_tir  <= self.alien4.ypos_tir):
+            print("alien4 touché")
+            C.delete(self.tir)
+            C.delete(self.alien4.arc)
+        if ((self.xpos_tir >= self.alien5.xpos_tir -30) or (self.xpos_tir <= self.alien5.xpos_tir + 30)) and (self.ypos_tir  >= self.alien5.ypos_tir):
+            print("alien5 touché")
+            C.delete(self.tir)
+            C.delete(self.alien5.arc)
+        if ((self.xpos_tir >= self.alien6.xpos_tir -30) or (self.xpos_tir <= self.alien6.xpos_tir + 30)) and (self.ypos_tir  >= self.alien6.ypos_tir):
+            print("alien6 touché")
+            C.delete(self.tir)
+            C.delete(self.alien6.arc)
+        if ((self.xpos_tir >= self.alien7.xpos_tir -30) or (self.xpos_tir <= self.alien7.xpos_tir + 30)) and (self.ypos_tir  >= self.alien7.ypos_tir):
+            print("alien7 touché")
+            C.delete(self.tir)
+            C.delete(self.alien7.arc)
+        if ((self.xpos_tir >= self.alien8.xpos_tir -30) or (self.xpos_tir <= self.alien8.xpos_tir + 30)) and (self.ypos_tir  >= self.alien8.ypos_tir):
+            print("alien8 touché")
+            C.delete(self.tir)
+            C.delete(self.alien8.arc)  
+           
 
 class obstacle:
     def __init__(self,posX,posY):
@@ -256,11 +306,13 @@ def jeu():
     alien4 = alien(C,5,50, mw, X-400, 180, "Images/alien.png", "Images/tir.png", vaiss, obs1, obs2, obs3, obs4, obs5)
     alien5 = alien(C,5,50, mw, X-600, 180, "Images/alien5.png", "Images/tir.png", vaiss, obs1, obs2, obs3, obs4, obs5)
 
+    # aliens plus rapides
     alien6 = alien(C,7, 50, mw, X, 100, "Images/alien2.png", "Images/tir4.png", vaiss, obs1, obs2, obs3, obs4, obs5)
     alien7 = alien(C,7, 50, mw, X+500, 100, "Images/alien2.png", "Images/tir4.png", vaiss, obs1, obs2, obs3, obs4, obs5)
     alien8 = alien(C,7, 50, mw, X-300, 100, "Images/alien2.png", "Images/tir4.png", vaiss, obs1, obs2, obs3, obs4, obs5)
 
-    # aliens plus rapides
+    vaiss.init2(alien0, alien1, alien2, alien3, alien4, alien5, alien6, alien7, alien8)
+
     '''
     alien7 = alien(10, 50, mw, X, 300, "Images/alien3.png")
     alien8 = alien(10, 50, mw, X+200, 300, "Images/alien3.png")
