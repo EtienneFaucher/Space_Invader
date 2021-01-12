@@ -75,11 +75,8 @@ class alien:
         C.coords(self.arc ,self.X - self.taille,self.Y - self.taille)#Y-self.taille
         # mise a jour 
         self.fenetre.after(80,self.mouvement)
-        '''if C.coords(self.tir)[0] > C.coords(self.vaisseau.imageVaisseau)[0] and C.coords(self.tir)[0] < C.coords(self.vaisseau.imageVaisseau)[2] and C.coords(self.tir)[3] > C.coords(self.vaisseau.imageVaisseau)[1]:
-            C.delete(self.vaisseau.imageVaisseau)'''
-        #Fonction lambda (Permet d'ajouter des arguments a la fonction)
-        #self.fenetre.after(80,lambda: self.mouvement())
-        
+        self.mort_alien
+
     def creation_tir(self):#Crée le tir à l'endroit ou est l'alien
         self.xpos_tir=self.X
         self.ypos_tir=self.Y
@@ -99,7 +96,6 @@ class alien:
     def tir_alien(self): #Deplacement du tir a partir du moment ou il est créé.
         afterTir=None
         if self.tir:
-            
             self.ypos_tir=self.ypos_tir+1
             C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir)
             afterTir=self.fenetre.after(8,self.tir_alien)
@@ -163,7 +159,15 @@ class alien:
             self.fenetre.after_cancel(afterTir)
         else:
             self.canShoot=True 
-              
+
+    def mort_alien(self):
+
+        if ((C.coords(self.vaisseau.tir)[0] <= C.coords(self.arc)[0] +50) or (C.coords(self.vaisseau.tir)[0] >= C.coords(self.arc)[0] - 50)) and (C.coords(self.vaisseau.tir)[1] >= C.coords(self.arc)[1]):
+            print("alien touché")
+            C.delete(self.vaisseau.tir)
+            C.delete(self.arc)
+
+
 class vaisseau:
     def __init__(self, vitesse_de_tir, taille_vaisseau):
         self.tir=vitesse_de_tir
@@ -219,10 +223,9 @@ class vaisseau:
         #self.ypos_tir=self.ypos_tir-10
         #C.move(self.tir, self.xpos_tir, self.ypos_tir)
         #C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
-        C.move(self.tir, 0, -10)
+        C.move(self.tir, 0, -20)
         mw.after(50,self.tir_vaisseau)
-        alien_touche()
-
+        self.alien_touche()
 
     def droite(self,event):
         posx = 10
