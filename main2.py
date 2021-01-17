@@ -59,7 +59,7 @@ class alien:
         self.detruit4= False
         self.detruit5= False
 
-    def mouvement(self):
+    def mouvement(self): #Cette fonction permet de déplacer l'image de l'alien, et de le faire changer de direction lorsqu'il arrive sur les bords.
         #print(C.coords(self.vaisseau.imageVaisseau)[1])
         
         if self.X+self.taille > lar_canv:
@@ -87,7 +87,6 @@ class alien:
             self.tir_alien()
             self.canShoot = False
 
-        #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
         #self.fenetre.after(1000,lambda: C.delete(self.tir))
         self.fenetre.after( random.randint(4100, 4500),self.creation_tir)
         if self.ypos_tir > haut_canv - 100:
@@ -99,7 +98,7 @@ class alien:
             self.ypos_tir=self.ypos_tir+1
             C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir)
             afterTir=self.fenetre.after(8,self.tir_alien)
-            if self.ypos_tir > haut_canv-50:
+            if self.ypos_tir > haut_canv-50: #On utilise ici des conditions pour gérer les collisions avec les obstacles.
                 C.delete(self.tir)
 
             if (self.xpos_tir >= self.obstacle1.obs_x - 30) and (self.xpos_tir <= self.obstacle1.obs_x + 50) and (self.ypos_tir  >= self.obstacle1.obs_y):
@@ -152,7 +151,7 @@ class alien:
                     gameOver_window.title("Game Over")
                     txt_lbl=Label(gameOver_window, text="GAME OVER!\n\n\n Jeu développé en Python ! !\n\n\n Createurs: Silia et Etienne :)")
                     txt_lbl.pack(padx=100,pady=100)
-                    bouton_rejouer = Button(gameOver_window, text = "Rejouer", command = jeu)
+                    bouton_rejouer = Button(gameOver_window, text = "Rejouer", command = rejouer)
                     bouton_rejouer.pack(padx=50, pady=0)
                     gameOver_window.mainloop()
         elif afterTir:
@@ -168,7 +167,7 @@ class alien:
             C.delete(self.arc)
 
 
-class vaisseau:
+class vaisseau: #On crée l'objet vaisseau. On n'appelle cette classe qu'une seule fois car il n'y a qu'un seul vaisseau.
     def __init__(self, vitesse_de_tir, taille_vaisseau):
         self.tir=vitesse_de_tir
         self.taille= taille_vaisseau
@@ -191,7 +190,7 @@ class vaisseau:
         mw.bind('<Left>', self.gauche)
         mw.bind('<space>', self.creation_tir)
 
-    def creation_tir(self,event):
+    def creation_tir(self,event):#On crée ici le tir aux positions du vaisseau.
         #self.tir1=PhotoImage(file="Images/tir2.png")
         #self.imageTir = C.create_image(self.xpos, self.ypos, image=self.tir1)
         
@@ -227,7 +226,7 @@ class vaisseau:
         mw.after(50,self.tir_vaisseau)
         self.alien_touche()
 
-    def droite(self,event):
+    def droite(self,event): #les méthodes suivantes servent à déplacer le vaisseau lorsqu'on appuie sur les touches du clavier.
         posx = 10
         posy=0
         self.xpos = self.xpos + posx
@@ -247,7 +246,7 @@ class vaisseau:
         else:
             self.xpos=35
 
-    def init2(self,alien0, alien1, alien2, alien3, alien4, alien5, alien6, alien7, alien8):
+    def init2(self,alien0, alien1, alien2, alien3, alien4, alien5, alien6, alien7, alien8): #Ce deuxième init permet de récuperer les variables des aliens qui ont été crée apres la creation du vaisseau. Cela permet de gérer les collisions.
 
         self.alien0 = alien0
         self.alien1 = alien1
@@ -261,7 +260,7 @@ class vaisseau:
  
     def alien_touche(self):
         print(self.xpos_tir, self.alien0.xpos_tir)
-        if ((self.xpos_tir >= self.alien0.xpos_tir -50) or (self.xpos_tir <= self.alien0.xpos_tir + 50)) and (self.ypos_tir  <= self.alien0.ypos_tir):
+        if ((self.xpos_tir >= self.alien0.xpos_tir -50) or (self.xpos_tir <= self.alien0.xpos_tir + 50)) and (self.ypos_tir  == self.alien0.ypos_tir):
             print("alien0 touché")
             C.delete(self.tir)
             C.delete(self.alien0.arc)
@@ -299,7 +298,7 @@ class vaisseau:
             C.delete(self.alien8.arc)  
            
 
-class obstacle:
+class obstacle: #classe obstacle pour mettre les météorites.
     def __init__(self,posX,posY):
         self.obs_x=posX
         self.obs_y=posY
@@ -308,12 +307,12 @@ class obstacle:
     def retourpos(self):
         return(self.obs_x, self.obs_y)
 
-#lancement du jeu
+#lancement du jeu. Cette fonction va être appellée par le bouton jouer.
 def jeu():
     print("Lancement du jeu")
     ButtonJouer.destroy()
 
-    vaiss = vaisseau(10,20)
+    vaiss = vaisseau(10,20) #On crée ici tous nos objets. On commence par le vaisseau.
 
     obs1 = obstacle(80, 380)
     obs2 = obstacle(300,380)
@@ -347,8 +346,51 @@ def jeu():
     print(vaiss.xpos_tir)
     print(vaiss.ypos_tir)
 
+def rejouer(): #Recrée la fenetre de départ pour pouvoir relancer une partie.
+    # Creation de la fenetre graphique
+    mw = Tk()
+    mw.title('Space Invader')
+    #Taille de fenetre
+    mw.geometry('1280x660')
+    mw.configure(bg='black')
 
-def propos():
+    #Menu
+    menubar= Menu(mw)
+    menufichier= Menu(menubar,tearoff=0)
+    menufichier.add_command(label="Quitter", command = mw.destroy)
+    menufichier.add_command(label="Jouer",command=jeu)
+    menufichier.add_command(label="A propos",command=propos)
+    menubar.add_cascade(label="Fichier", menu=menufichier)
+    mw.config(menu=menubar)
+
+    #Zone de texte
+    score= Label(mw, bg="darkgray", text="Votre Score :")
+    score.pack(padx=0, pady=0)
+    vie= Label(mw, bg="darkgray", text="Nombre de vies restantes :", textvariable=nbrvie)
+    vie.pack(padx=0, pady=0)
+
+    #Bouton debut de partie
+    ButtonJouer=Button(mw,text='Jouer',command=jeu)
+    ButtonJouer.pack(padx=50, pady=0)
+
+    #Canevas
+    filename = PhotoImage(file="Images/fond1.gif" , master=mw,)
+    C = Canvas(mw, height=haut_canv, width=lar_canv)
+    C.create_image(200,200, image=filename)
+    C.pack()
+
+    #Bouton quitter
+    ButtonQuitter=Button(mw,text='Quitter',command=mw.destroy)
+    ButtonQuitter.pack(padx=50, pady=0)
+
+    #Bouton A propos
+    Buttonpropos=Button(mw,text='A propos',command=propos)
+    Buttonpropos.pack(padx=50, pady=0)
+    #lancement du gestionnaire d'evenements
+    mw.mainloop()
+
+
+def propos(): #creation de la fenêtre "a propos"
     apropos_window=Tk()
     apropos_window.title("A propos de notre jeux")
     txt_lbl=Label(apropos_window, text="A propos:\n\n\n Jeu développé en Python ! !\n\n\n Createurs: Silia et Etienne :)")
