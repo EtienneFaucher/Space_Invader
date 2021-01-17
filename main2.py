@@ -24,7 +24,7 @@ nbrvie=3
 
 #On crée notre premiere classe "alien", qui va nous permettre des créer les differents méchants du jeu.
 class alien:
-    #On initialise ici toutes les variables utiles. ON en importe certaine depuis le programme principal.
+    #On initialise ici toutes les variables utiles. ON en importe certaines depuis le programme principal.
     def __init__(self, canvas, vitesse, taille, mw, Xpos, Ypos, image_alien, image_tir, vaisseau, obstacle1, obstacle2, obstacle3, obstacle4, obstacle5):
         
         self.vitesse = vitesse
@@ -60,7 +60,10 @@ class alien:
         self.detruit5= False
 
     def mouvement(self):
-        #print(C.coords(self.vaisseau.imageVaisseau)[1])
+        #print(C.coords(self.vaisseau.tir)[0])
+        #print(C.coords(self.vaisseau.tir)[1])
+        #print(C.coords(self.arc)[0])
+        #print(C.coords(self.arc)[1])
         
         if self.X+self.taille > lar_canv:
             self.sens=-1
@@ -75,20 +78,18 @@ class alien:
         C.coords(self.arc ,self.X - self.taille,self.Y - self.taille)#Y-self.taille
         # mise a jour 
         self.fenetre.after(80,self.mouvement)
-        self.mort_alien
+        #self.mort_alien()
 
     def creation_tir(self):#Crée le tir à l'endroit ou est l'alien
         self.xpos_tir=self.X
         self.ypos_tir=self.Y
 
-        
         if self.canShoot:
             self.tir = C.create_image(self.xpos_tir, self.ypos_tir, image=self.laser )
             self.tir_alien()
             self.canShoot = False
 
         #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
-        #self.fenetre.after(1000,lambda: C.delete(self.tir))
         self.fenetre.after( random.randint(4100, 4500),self.creation_tir)
         if self.ypos_tir > haut_canv - 100:
             C.delete(self.tir)
@@ -102,6 +103,7 @@ class alien:
             if self.ypos_tir > haut_canv-50:
                 C.delete(self.tir)
 
+            #destruction des obstacles
             if (self.xpos_tir >= self.obstacle1.obs_x - 30) and (self.xpos_tir <= self.obstacle1.obs_x + 50) and (self.ypos_tir  >= self.obstacle1.obs_y):
                 print("Obstacle1 touché")
                 C.delete(self.tir)
@@ -137,8 +139,8 @@ class alien:
 
                 C.delete(self.obstacle5.obstacle)
                 self.obstacle1.obs_x = self.xpos_tir +35
-                #self.detruit == True
 
+            #destruction du vaisseau
             if (self.xpos_tir >= C.coords(self.vaisseau.imageVaisseau)[0] -40) and (self.xpos_tir <= C.coords(self.vaisseau.imageVaisseau)[0] +40) and (self.ypos_tir  >= C.coords(self.vaisseau.imageVaisseau)[1]):
                 if self.vaisseau.vie > 1:
                     C.delete(self.tir)
@@ -160,9 +162,11 @@ class alien:
         else:
             self.canShoot=True 
 
+    #destruction des aliens
+    #les conditions sur les coordonnees du l'image du tir du vaisseau ne marchent pas 
     def mort_alien(self):
 
-        if ((C.coords(self.vaisseau.tir)[0] <= C.coords(self.arc)[0] +50) or (C.coords(self.vaisseau.tir)[0] >= C.coords(self.arc)[0] - 50)) and (C.coords(self.vaisseau.tir)[1] >= C.coords(self.arc)[1]):
+        if ((C.coords(self.vaisseau.tir)[0] <= C.coords(self.arc)[0] +10) and (C.coords(self.vaisseau.tir)[0] >= C.coords(self.arc)[0])) and (C.coords(self.vaisseau.tir)[1] >= C.coords(self.arc)[1]) and (C.coords(self.vaisseau.tir)[1] <= C.coords(self.arc)[1] + 10):
             print("alien touché")
             C.delete(self.vaisseau.tir)
             C.delete(self.arc)
@@ -181,51 +185,30 @@ class vaisseau:
         self.canShoot=True
         self.shoot=True
         self.vie = 15
-        #Creation du tir 
-        #self.tir = C.create_arc(self.xpos_tir, self.ypos_tir, 275, 275, start=-270, extent=359, fill="yellow")
-        #self.tir_vaisseau()
 
         self.imageVaisseau = C.create_image(self.xpos - self.taille, self.ypos_tir - self.taille, image=self.vaisseau)
         
         mw.bind('<Right>', self.droite)
         mw.bind('<Left>', self.gauche)
         mw.bind('<space>', self.creation_tir)
+        mw.bind('<v>', self.cheatcode)
 
     def creation_tir(self,event):
-        #self.tir1=PhotoImage(file="Images/tir2.png")
-        #self.imageTir = C.create_image(self.xpos, self.ypos, image=self.tir1)
         
         self.tir = C.create_image(self.xpos_tir, self.ypos, image=self.imageTir)
-        '''self.tir = C.create_arc(self.xpos, self.ypos, 275, 75, start=-270, extent=359, fill="yellow")
-        self.xpos_tir=self.xpos
-        self.ypos_tir=self.ypos
-        if self.canShoot==True:
-            self.tir_vaisseau()
-            self.canShoot=False
-            self.shoot=False'''
-        #self.tir = C.create_arc(self.xpos, self.ypos, 275, 75, start=-270, extent=359, fill="yellow")
-        
-        #self.tir_vaisseau()
-        #self.ypos_tir=self.ypos
-        #mw.after(1500, lambda: C.delete(self.tir))
-        '''if self.canShoot:
-            self.tir_vaisseau()
-            mw.after(1500, lambda: C.delete(self.tir))
-            self.canShoot = False'''
+
         if self.canShoot:
             self.tir_vaisseau()
-            mw.after(2000, lambda: C.delete(self.tir)) 
+            mw.after(500, lambda: C.delete(self.tir)) 
             self.canShoot=False   
 
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
         self.xpos_tir=self.xpos
         self.ypos_tir=self.ypos
-        #self.ypos_tir=self.ypos_tir-10
-        #C.move(self.tir, self.xpos_tir, self.ypos_tir)
-        #C.coords(self.tir ,self.xpos_tir-20,self.ypos_tir-20,self.xpos_tir+20,self.ypos_tir+20)
         C.move(self.tir, 0, -20)
         mw.after(50,self.tir_vaisseau)
         self.alien_touche()
+        
 
     def droite(self,event):
         posx = 10
@@ -247,6 +230,10 @@ class vaisseau:
         else:
             self.xpos=35
 
+    def cheatcode(self, event):
+        print("+3 vies")
+        self.vie = self.vie +3
+
     def init2(self,alien0, alien1, alien2, alien3, alien4, alien5, alien6, alien7, alien8):
 
         self.alien0 = alien0
@@ -260,40 +247,40 @@ class vaisseau:
         self.alien8 = alien8
  
     def alien_touche(self):
-        print(self.xpos_tir, self.alien0.xpos_tir)
-        if ((self.xpos_tir >= self.alien0.xpos_tir -50) or (self.xpos_tir <= self.alien0.xpos_tir + 50)) and (self.ypos_tir  <= self.alien0.ypos_tir):
+        #print(self.xpos_tir, self.alien0.xpos_tir)
+        if ((self.xpos_tir >= C.coords(self.alien0.arc)[0] -30) and (self.xpos_tir <= C.coords(self.alien0.arc)[0] + 30)) and (self.ypos_tir  <= C.coords(self.alien0.arc)[1]) and (self.ypos_tir  >= C.coords(self.alien0.arc)[1] -20):
             print("alien0 touché")
             C.delete(self.tir)
             C.delete(self.alien0.arc)
-        if ((self.xpos_tir >= self.alien1.xpos_tir -50) or (self.xpos_tir <= self.alien1.xpos_tir + 50)) and (self.ypos_tir  <= self.alien1.ypos_tir):
+        if ((self.xpos_tir >= C.coords(self.alien1.arc)[0] -30) and (self.xpos_tir <= C.coords(self.alien1.arc)[0] + 30)) and (self.ypos_tir  <= C.coords(self.alien1.arc)[1]) and (self.ypos_tir  >= C.coords(self.alien1.arc)[1] -20):
             print("alien1 touché")
             C.delete(self.tir)
             C.delete(self.alien1.arc)
-        if ((self.xpos_tir >= self.alien2.xpos_tir -50) or (self.xpos_tir <= self.alien2.xpos_tir + 50)) and (self.ypos_tir  <= self.alien2.ypos_tir):
+        if ((self.xpos_tir >= C.coords(self.alien2.arc)[0] -20) and (self.xpos_tir <= C.coords(self.alien2.arc)[0] + 30)) and (self.ypos_tir  <= C.coords(self.alien2.arc)[1]) and (self.ypos_tir  >= C.coords(self.alien2.arc)[1] -20):
             print("alien2 touché")
             C.delete(self.tir)
             C.delete(self.alien2.arc)
-        if ((self.xpos_tir >= self.alien3.xpos_tir -50) or (self.xpos_tir <= self.alien3.xpos_tir + 50)) and (self.ypos_tir  <= self.alien3.ypos_tir):
+        if ((self.xpos_tir >= C.coords(self.alien3.arc)[0] -30) and (self.xpos_tir <= C.coords(self.alien3.arc)[0] + 30)) and (self.ypos_tir  <= C.coords(self.alien3.arc)[1]) and (self.ypos_tir  >= C.coords(self.alien3.arc)[1] -20):
             print("alien3 touché")
             C.delete(self.tir)
             C.delete(self.alien3.arc)
-        if ((self.xpos_tir >= self.alien4.xpos_tir -50) or (self.xpos_tir <= self.alien4.xpos_tir + 50)) and (self.ypos_tir  <= self.alien4.ypos_tir):
+        if ((self.xpos_tir >= C.coords(self.alien4.arc)[0] -30) and (self.xpos_tir <= C.coords(self.alien4.arc)[0] + 30)) and (self.ypos_tir  <= C.coords(self.alien4.arc)[1]) and (self.ypos_tir  >= C.coords(self.alien4.arc)[1] -20):
             print("alien4 touché")
             C.delete(self.tir)
             C.delete(self.alien4.arc)
-        if ((self.xpos_tir >= self.alien5.xpos_tir -30) or (self.xpos_tir <= self.alien5.xpos_tir + 30)) and (self.ypos_tir  >= self.alien5.ypos_tir):
+        if ((self.xpos_tir >= C.coords(self.alien5.arc)[0] -30) and (self.xpos_tir <= C.coords(self.alien5.arc)[0] + 30)) and (self.ypos_tir  <= C.coords(self.alien5.arc)[1]) and (self.ypos_tir  >= C.coords(self.alien5.arc)[1] -20):
             print("alien5 touché")
             C.delete(self.tir)
             C.delete(self.alien5.arc)
-        if ((self.xpos_tir >= self.alien6.xpos_tir -30) or (self.xpos_tir <= self.alien6.xpos_tir + 30)) and (self.ypos_tir  >= self.alien6.ypos_tir):
+        if ((self.xpos_tir >= C.coords(self.alien6.arc)[0] -30) and (self.xpos_tir <= C.coords(self.alien6.arc)[0] + 30)) and (self.ypos_tir  <= C.coords(self.alien6.arc)[1]) and (self.ypos_tir  >= C.coords(self.alien6.arc)[1] -20):
             print("alien6 touché")
             C.delete(self.tir)
             C.delete(self.alien6.arc)
-        if ((self.xpos_tir >= self.alien7.xpos_tir -30) or (self.xpos_tir <= self.alien7.xpos_tir + 30)) and (self.ypos_tir  >= self.alien7.ypos_tir):
+        if ((self.xpos_tir >= C.coords(self.alien7.arc)[0] -30) and (self.xpos_tir <= C.coords(self.alien7.arc)[0] + 30)) and (self.ypos_tir  <= C.coords(self.alien7.arc)[1]) and (self.ypos_tir  >= C.coords(self.alien7.arc)[1] -20):
             print("alien7 touché")
             C.delete(self.tir)
             C.delete(self.alien7.arc)
-        if ((self.xpos_tir >= self.alien8.xpos_tir -30) or (self.xpos_tir <= self.alien8.xpos_tir + 30)) and (self.ypos_tir  >= self.alien8.ypos_tir):
+        if ((self.xpos_tir >= self.alien8.xpos_tir -50) and (self.xpos_tir <= self.alien8.xpos_tir + 50)) and (self.ypos_tir  >= self.alien8.ypos_tir):
             print("alien8 touché")
             C.delete(self.tir)
             C.delete(self.alien8.arc)  
@@ -342,10 +329,10 @@ def jeu():
     '''
 
     #test
-    print(alien2.xpos_tir)
+    #print(alien2.xpos_tir)
     #print(vaiss.imageVaisseau.coords[0])
-    print(vaiss.xpos_tir)
-    print(vaiss.ypos_tir)
+    #print(vaiss.xpos_tir)
+    #print(vaiss.ypos_tir)
 
 
 def propos():
