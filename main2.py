@@ -2,8 +2,7 @@
 qui : Etienne Faucher / Silia Taider
 quand : le 08/12/2020 
 Jeu Space invader
-TODO : Fontions d'appels de fonction (tir et deplacement vaisseau)
-Pareil pour le debut du jeu quand on appuie sur jouer
+TODO : Regler les problèmes de collision, faire des niveaux.
 """
 #On importe les modules
 import random
@@ -34,7 +33,6 @@ class alien:
         self.xpos_tir = xpos_tir_alien
         self.ypos_tir = ypos_tir_alien
         self.canvas = canvas
-        coord = 10, 50, 240, 210
         self.alien = PhotoImage(file=image_alien)
         self.laser = PhotoImage(file=image_tir)
         self.vaisseau = vaisseau 
@@ -52,7 +50,6 @@ class alien:
         self.mouvement()
         self.creation_tir()
         position_vaisseau = C.coords(self.vaisseau.imageVaisseau)[0]
-        collision=True
         self.detruit1= False
         self.detruit2= False
         self.detruit3= False
@@ -60,10 +57,6 @@ class alien:
         self.detruit5= False
 
     def mouvement(self):
-        #print(C.coords(self.vaisseau.tir)[0])
-        #print(C.coords(self.vaisseau.tir)[1])
-        #print(C.coords(self.arc)[0])
-        #print(C.coords(self.arc)[1])
         
         if self.X+self.taille > lar_canv:
             self.sens=-1
@@ -105,35 +98,30 @@ class alien:
 
             #destruction des obstacles
             if (self.xpos_tir >= self.obstacle1.obs_x - 30) and (self.xpos_tir <= self.obstacle1.obs_x + 50) and (self.ypos_tir  >= self.obstacle1.obs_y):
-                print("Obstacle1 touché")
                 C.delete(self.tir)
                 self.tir=None
                 C.delete(self.obstacle1.obstacle)
                 self.obstacle1.obs_x = self.xpos_tir +35
                 #self.detruit1 == True
             if (self.xpos_tir >= self.obstacle2.obs_x -30 ) and (self.xpos_tir <= self.obstacle2.obs_x + 30) and (self.ypos_tir  >= self.obstacle2.obs_y):
-                print("Obstacle2 touché")
                 C.delete(self.tir)
                 self.tir=None
                 C.delete(self.obstacle2.obstacle)
                 self.obstacle1.obs_x = self.xpos_tir +35
                 #self.detruit2 == True
             if (self.xpos_tir >= self.obstacle3.obs_x -30) and (self.xpos_tir <= self.obstacle3.obs_x + 30) and (self.ypos_tir  >= self.obstacle3.obs_y):
-                print("Obstacle3 touché")
                 C.delete(self.tir)
                 self.tir=None
                 C.delete(self.obstacle3.obstacle)
                 self.obstacle1.obs_x = self.xpos_tir +35
                 #self.detruit3 == True
             if (self.xpos_tir >= self.obstacle4.obs_x -30) and (self.xpos_tir <= self.obstacle4.obs_x + 30) and (self.ypos_tir  >= self.obstacle4.obs_y):
-                print("Obstacle4 touché")
                 C.delete(self.tir)
                 self.tir=None
                 C.delete(self.obstacle4.obstacle)
                 self.obstacle1.obs_x = self.xpos_tir +35
                 #self.detruit4 == True
             if (self.xpos_tir >= self.obstacle5.obs_x -30) and (self.xpos_tir <= self.obstacle5.obs_x + 30) and (self.ypos_tir  >= self.obstacle5.obs_y):
-                print("Obstacle5 touché")
                 C.delete(self.tir)
                 self.tir=None
 
@@ -194,8 +182,6 @@ class vaisseau: #On crée l'objet vaisseau. On n'appelle cette classe qu'une seu
         mw.bind('<v>', self.cheatcode)
 
     def creation_tir(self,event):#On crée ici le tir aux positions du vaisseau.
-        #self.tir1=PhotoImage(file="Images/tir2.png")
-        #self.imageTir = C.create_image(self.xpos, self.ypos, image=self.tir1)
         
         self.tir = C.create_image(self.xpos_tir, self.ypos, image=self.imageTir)
 
@@ -284,7 +270,6 @@ class vaisseau: #On crée l'objet vaisseau. On n'appelle cette classe qu'une seu
             C.delete(self.tir)
             C.delete(self.alien7.arc)
         if ((self.xpos_tir >= self.alien8.xpos_tir -50) and (self.xpos_tir <= self.alien8.xpos_tir + 50)) and (self.ypos_tir  >= self.alien8.ypos_tir):
-            print("alien8 touché")
             C.delete(self.tir)
             C.delete(self.alien8.arc)  
            
@@ -324,18 +309,6 @@ def jeu():
     alien8 = alien(C,7, 50, mw, X-300, 100, "Images/alien2.png", "Images/tir4.png", vaiss, obs1, obs2, obs3, obs4, obs5)
 
     vaiss.init2(alien0, alien1, alien2, alien3, alien4, alien5, alien6, alien7, alien8)
-
-    '''
-    alien7 = alien(10, 50, mw, X, 300, "Images/alien3.png")
-    alien8 = alien(10, 50, mw, X+200, 300, "Images/alien3.png")
-    alien9 = alien(10, 50, mw, X-200, 300, "Images/alien3.png")
-    '''
-
-    #test
-    #print(alien2.xpos_tir)
-    #print(vaiss.imageVaisseau.coords[0])
-    #print(vaiss.xpos_tir)
-    #print(vaiss.ypos_tir)
 
 def rejouer(): #Recrée la fenetre de départ pour pouvoir relancer une partie.
     # Creation de la fenetre graphique
