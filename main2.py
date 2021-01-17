@@ -59,16 +59,11 @@ class alien:
         self.detruit4= False
         self.detruit5= False
 
-<<<<<<< HEAD
     def mouvement(self):
         #print(C.coords(self.vaisseau.tir)[0])
         #print(C.coords(self.vaisseau.tir)[1])
         #print(C.coords(self.arc)[0])
         #print(C.coords(self.arc)[1])
-=======
-    def mouvement(self): #Cette fonction permet de déplacer l'image de l'alien, et de le faire changer de direction lorsqu'il arrive sur les bords.
-        #print(C.coords(self.vaisseau.imageVaisseau)[1])
->>>>>>> aeaf9af899d4de494a7393cfde3d0b45ebe450a2
         
         if self.X+self.taille > lar_canv:
             self.sens=-1
@@ -94,11 +89,7 @@ class alien:
             self.tir_alien()
             self.canShoot = False
 
-<<<<<<< HEAD
         #Mettre ici des conditions pour supprimer la boule (si vaisseau touché)
-=======
-        #self.fenetre.after(1000,lambda: C.delete(self.tir))
->>>>>>> aeaf9af899d4de494a7393cfde3d0b45ebe450a2
         self.fenetre.after( random.randint(4100, 4500),self.creation_tir)
         if self.ypos_tir > haut_canv - 100:
             C.delete(self.tir)
@@ -171,7 +162,7 @@ class alien:
         else:
             self.canShoot=True 
 
-    #destruction des aliens
+    #destruction des aliens méthode 1
     #les conditions sur les coordonnees du l'image du tir du vaisseau ne marchent pas 
     def mort_alien(self):
 
@@ -202,19 +193,15 @@ class vaisseau: #On crée l'objet vaisseau. On n'appelle cette classe qu'une seu
         mw.bind('<space>', self.creation_tir)
         mw.bind('<v>', self.cheatcode)
 
-<<<<<<< HEAD
-    def creation_tir(self,event):
-=======
     def creation_tir(self,event):#On crée ici le tir aux positions du vaisseau.
         #self.tir1=PhotoImage(file="Images/tir2.png")
         #self.imageTir = C.create_image(self.xpos, self.ypos, image=self.tir1)
->>>>>>> aeaf9af899d4de494a7393cfde3d0b45ebe450a2
         
         self.tir = C.create_image(self.xpos_tir, self.ypos, image=self.imageTir)
 
         if self.canShoot:
             self.tir_vaisseau()
-            mw.after(500, lambda: C.delete(self.tir)) 
+            mw.after(1000, lambda: C.delete(self.tir)) 
             self.canShoot=False   
 
     def tir_vaisseau(self): #Deplacement du tir a partir du moment ou il est envoye
@@ -245,15 +232,11 @@ class vaisseau: #On crée l'objet vaisseau. On n'appelle cette classe qu'une seu
         else:
             self.xpos=35
 
-<<<<<<< HEAD
     def cheatcode(self, event):
         print("+3 vies")
         self.vie = self.vie +3
 
     def init2(self,alien0, alien1, alien2, alien3, alien4, alien5, alien6, alien7, alien8):
-=======
-    def init2(self,alien0, alien1, alien2, alien3, alien4, alien5, alien6, alien7, alien8): #Ce deuxième init permet de récuperer les variables des aliens qui ont été crée apres la creation du vaisseau. Cela permet de gérer les collisions.
->>>>>>> aeaf9af899d4de494a7393cfde3d0b45ebe450a2
 
         self.alien0 = alien0
         self.alien1 = alien1
@@ -264,15 +247,11 @@ class vaisseau: #On crée l'objet vaisseau. On n'appelle cette classe qu'une seu
         self.alien6 = alien6
         self.alien7 = alien7
         self.alien8 = alien8
- 
+
+    # destruction des aliens methode 2
     def alien_touche(self):
-<<<<<<< HEAD
         #print(self.xpos_tir, self.alien0.xpos_tir)
         if ((self.xpos_tir >= C.coords(self.alien0.arc)[0] -30) and (self.xpos_tir <= C.coords(self.alien0.arc)[0] + 30)) and (self.ypos_tir  <= C.coords(self.alien0.arc)[1]) and (self.ypos_tir  >= C.coords(self.alien0.arc)[1] -20):
-=======
-        print(self.xpos_tir, self.alien0.xpos_tir)
-        if ((self.xpos_tir >= self.alien0.xpos_tir -50) or (self.xpos_tir <= self.alien0.xpos_tir + 50)) and (self.ypos_tir  == self.alien0.ypos_tir):
->>>>>>> aeaf9af899d4de494a7393cfde3d0b45ebe450a2
             print("alien0 touché")
             C.delete(self.tir)
             C.delete(self.alien0.arc)
