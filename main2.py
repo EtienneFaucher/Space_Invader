@@ -49,7 +49,6 @@ class alien:
          #Creation du tir 
         self.mouvement()
         self.creation_tir()
-        position_vaisseau = C.coords(self.vaisseau.imageVaisseau)[0]
         self.detruit1= False
         self.detruit2= False
         self.detruit3= False
